@@ -1,0 +1,16 @@
+.env
+/userserver/target
+/client/node_modules
+/userserver/.env
+/client/.next
+rest.rest
+/userserver/rest.rest
+
+/productserver/.env
+/productserver/target
+/productserver/rest.rest
+
+
+/surrealserver/.env
+/surrealserver/target
+/surrealserver/rest.rest

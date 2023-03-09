@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+.swiper-button-disabled::after {
+  display: none;
+}
+span::after {
+  display: none;
+}
+.swiper-pagination-bullet {
+  opacity: 0.5;
+  background-color: rgb(198, 198, 198) !important;
+  width: 4rem;
+  border-radius: 3px;
+
+}
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: rgb(223, 222, 222) !important;
+  width: 4rem;
+  border-radius: 3px;
+
+}
+.swiper-pagination {
+  pointer-events: all !important;
+}
+
+.rotate-on-hover:hover {
+  transform: rotate(360deg);
+  transition: transform 0.5s ease-in-out;
+}
+

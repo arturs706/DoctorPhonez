@@ -35,8 +35,6 @@ services:
     container_name: nextjs-app
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - 3000:3000
     networks:
@@ -47,7 +45,7 @@ services:
     build:
       context: ./userserver
       dockerfile: Dockerfile
-    container_name: rustserver-dc
+    container_name: rustserver-dc-users
     ports:
       - 10000:10000
     networks:
@@ -58,15 +56,36 @@ services:
     environment:
       - MY_LOG_LEVEL=info
       - MY_LOG_STYLE=Always
-      - DATABASE_URL=${DATABASE_URL}
+      - USER_DATABASE_URL=${USER_DATABASE_URL}
       - EMAIL_VERIFICATION_SECRET=${EMAIL_VERIFICATION_SECRET}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      - STRIPE_PUBLISH_KEY=${STRIPE_PUBLISH_KEY}
       - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
       - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
       - RESET_PASSWORD_SECRET=${RESET_PASSWORD_SECRET}
       - SMTP_USERNAME=${SMTP_USERNAME}
       - EMAIL_PASSWORD_SECRET=${EMAIL_PASSWORD_SECRET}
+
+    depends_on:
+      - postgres
+
+
+  rust-products-server:
+    build:
+      context: ./productsserver
+      dockerfile: Dockerfile
+    container_name: rustserver-dc-products
+    ports:
+      - 10010:10010
+    networks:
+      - app_network
+    volumes:
+      - './productsserver:/usr/src/productsserver'
+      - '/usr/src/productsserver/target'
+    environment:
+      - MY_LOG_LEVEL=info
+      - MY_LOG_STYLE=Always
+      - PRODUCTS_DATABASE_URL=${PRODUCTS_DATABASE_URL}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_PUBLISH_KEY=${STRIPE_PUBLISH_KEY}
 
     depends_on:
       - postgres

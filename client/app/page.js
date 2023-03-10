@@ -16,6 +16,7 @@ export default function Home() {
   const [textId, setTextId] = useState(0)
   const sectionRef = useRef(null);
   const sectionThreeRef = useRef(null);
+  const sectionFourRef = useRef(null);
 
   const swiperData = [
     { 
@@ -78,6 +79,10 @@ export default function Home() {
 
   const handleClickTwo = () => {
     sectionThreeRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  };
+
+  const handleClickThree = () => {
+    sectionFourRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
 
@@ -232,13 +237,30 @@ export default function Home() {
 
 
       /* ========  */}
+    <section className={styles.sectionthree} ref={sectionThreeRef}>
+        <RecentItems />
+    </section>
+      {/* /* SECTION FOUR */
 
-      <section className={styles.sectionthree} ref={sectionThreeRef}>
-        <div className={styles.sectionthreediv}>
-          <h1>{widthSize}</h1>
-          <RecentItems />
+
+      /* ========  */}
+    <section className={styles.sectionfour}>
+    <div className={styles.sectionfourdiv}>
+          <h1>APPLE </h1>
+          <Image
+              src="https://res.cloudinary.com/dttaprmbu/image/upload/v1678030287/arrowdown_xtrut2.svg"
+              alt="arrow-down"
+              width={200}
+              height={148}
+              className="rotate-on-hover" // add a class to trigger the rotation on hover
+              onClick={handleClickThree}
+          />
         </div>
-      </section>
+        <div className={styles.ovalblurtwo}></div>
+    </section>
+    <section className={styles.sectionfive}></section>
+
+
     </main>
   )
 }

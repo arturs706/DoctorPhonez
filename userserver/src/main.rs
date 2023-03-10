@@ -74,7 +74,7 @@ pub struct Smtppassword {
 async fn main() {
     dotenv().ok();
 
-    let database_url: String = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let database_url: String = std::env::var("USER_DATABASE_URL").expect("USER_DATABASE_URL must be set");
     let email_verification_secret: String = std::env::var("EMAIL_VERIFICATION_SECRET").expect("EMAIL_VERIFICATION_SECRET must be set");
     let access_token_secret: String = std::env::var("ACCESS_TOKEN_SECRET").expect("ACCESS_TOKEN_SECRET must be set");
     let refresh_token_secret: String = std::env::var("REFRESH_TOKEN_SECRET").expect("REFRESH_TOKEN_SECRET must be set");

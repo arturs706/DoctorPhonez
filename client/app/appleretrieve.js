@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import styles from './recentitems.module.css'
+import styles from './appleretrieve.module.css'
 
 
-export default function RecentItems() {
+export default function Appleretrieve() {
   const [data, setData] = useState(null);
 
 
@@ -11,7 +11,7 @@ export default function RecentItems() {
     async function fetchData() {
       try {
         
-        const response = await fetch('http://0.0.0.0:10010/api/v1/products/recent');
+        const response = await fetch('http://0.0.0.0:10010/api/v1/products/apple');
         const data = await response.json();
         console.error(data.Ok[0].result);
 

@@ -7,6 +7,7 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DB_PRODUCTS=${POSTGRES_DB_PRODUCTS}
     ports:
       - 5432:5432
     volumes:
@@ -22,20 +23,6 @@ services:
       - PGADMIN_LISTEN_PORT = 5050
     ports:
       - 5050:80
-    networks:
-      - app_network
-
-
-  surrealdb:
-    image: surrealdb/surrealdb:nightly
-    environment:
-    - POSTGRES_USER=${POSTGRES_USER}
-    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-    ports:
-    - 8000:8000
-    volumes:
-    - surrealdbdata:/var/lib/surrealdb/data
-    command: "start --user ${POSTGRES_USER} --pass ${POSTGRES_PASSWORD} --log full file://var/lib/surrealdbdata/data"
     networks:
       - app_network
 
@@ -56,7 +43,7 @@ services:
       - app_network
 
 
-  rust-server:
+  rust-user-server:
     build:
       context: ./userserver
       dockerfile: Dockerfile
@@ -84,35 +71,6 @@ services:
     depends_on:
       - postgres
 
-  rust-surreal-server:
-    build:
-      context: ./surrealserver
-      dockerfile: Dockerfile
-    container_name: rustserver-dc-surreal
-    ports:
-      - 11000:11000
-    networks:
-      - app_network
-    restart: always
-    volumes:
-      - './surrealserver:/usr/src/surrealserver'
-      - '/usr/src/surrealserver/target'
-    environment:
-      - MY_LOG_LEVEL=info
-      - MY_LOG_STYLE=Always
-      - DATABASE_URL=${DATABASE_URL}
-      - EMAIL_VERIFICATION_SECRET=${EMAIL_VERIFICATION_SECRET}
-      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
-      - STRIPE_PUBLISH_KEY=${STRIPE_PUBLISH_KEY}
-      - ACCESS_TOKEN_SECRET=${ACCESS_TOKEN_SECRET}
-      - REFRESH_TOKEN_SECRET=${REFRESH_TOKEN_SECRET}
-      - RESET_PASSWORD_SECRET=${RESET_PASSWORD_SECRET}
-      - SMTP_USERNAME=${SMTP_USERNAME}
-      - EMAIL_PASSWORD_SECRET=${EMAIL_PASSWORD_SECRET}
-
-    depends_on:
-      - surrealdb
-
 
 networks:
   app_network:
@@ -121,13 +79,3 @@ networks:
 
 volumes:
   data:
-  surrealdbdata:
-
-
-  # redis:
-  #   image: redis:7.0.7-alpine3.17
-  #   container_name: redis_cache
-  #   ports:
-  #     - 6379:6379
-  #   networks:
-  #     - app_network

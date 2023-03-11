@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 640vh;
+  height: 660vh;
   width: 100%;
   background-color: #000235;
   color: white;
@@ -634,6 +634,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 60vh;
+  height: 80vh;
   width: 100%;
 }

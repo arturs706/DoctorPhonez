@@ -77,7 +77,7 @@ export default function Samsungretrieve() {
           },
         768: {
           width: 768,
-          slidesPerView: 2,
+          slidesPerView: 1,
           },
         500: {
           width: 500,

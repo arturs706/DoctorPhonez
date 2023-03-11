@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 720vh;
+  height: 640vh;
   width: 100%;
   background-color: #000235;
   color: white;
@@ -532,7 +532,7 @@
     height: 180vh;
   }
   .main {
-    height: 680vh;
+    height: 720vh;
   }
 }
 /* SECTION FOUR */
@@ -585,7 +585,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 60vh;
   width: 100%;
 }
 /* SECTION SIX */
@@ -634,6 +634,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 60vh;
   width: 100%;
 }

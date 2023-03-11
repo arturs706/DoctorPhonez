@@ -77,7 +77,7 @@ export default function Appleretrieve() {
           },
         768: {
           width: 768,
-          slidesPerView: 2,
+          slidesPerView: 1,
           },
         500: {
           width: 500,
@@ -95,6 +95,7 @@ export default function Appleretrieve() {
                   height={300}
                   quality={100}
                 />
+                
               </SwiperSlide>
             ))}
 

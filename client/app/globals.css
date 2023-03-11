@@ -35,3 +35,7 @@ span::after {
   transition: transform 0.5s ease-in-out;
 }
 
+.swiper-slide {
+  display: flex;
+  align-items: center;
+}

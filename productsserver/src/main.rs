@@ -9,6 +9,11 @@ use tower_http::cors::{CorsLayer, AllowOrigin};
 use http::header::HeaderValue;
 use http::Method;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
+mod productroutes;
+use productroutes::{gettwoappleproducts, getappleproducts, getsamsungproducts};
+
+
+
 
 #[derive(Clone)]
 
@@ -36,7 +41,7 @@ pub struct StripePublicToken {
 async fn main() {
     dotenv().ok();
 
-    let database_url: String = std::env::var("PRODUCTS_DATABASE_URL").expect("PRODUCTS_DATABASE_URL must be set");
+    let database_url: String = std::env::var("LOCAL_PRODUCTS_DATABASE_URL").expect("LOCAL_PRODUCTS_DATABASE_URL must be set");
     let stripe_token_secret: String = std::env::var("STRIPE_SECRET_KEY").expect("STRIPE_SECRET_KEY must be set");
     let stripe_public_secret: String = std::env::var("STRIPE_PUBLISH_KEY").expect("STRIPE_PUBLISH_KEY must be set");
 
@@ -75,14 +80,18 @@ async fn main() {
         stripepubtoken: StripePublicToken { stripepubtoken: stripe_public_secret },
     };
     let app = Router::new()
-
+    .route("/api/v1/products/apple/featured", get(gettwoappleproducts))
+    .route("/api/v1/products/apple", get(getappleproducts))
+    .route("/api/v1/products/samsung", get(getsamsungproducts))
     .layer(cors)
     .layer(CookieManagerLayer::new())
     .with_state(state);
-        
 
-   axum::Server::bind(&"0.0.0.0:10010".parse().unwrap())
-       .serve(app.into_make_service())
-       .await.unwrap();
+let server = axum::Server::bind(&"0.0.0.0:10010".parse().unwrap())
+.serve(app.into_make_service());
+
+if let Err(err) = server.await {
+    eprintln!("server error: {}", err);
+}
 }
  

@@ -9,7 +9,7 @@ import { Navigation } from "swiper";
 import Image from 'next/image';
 
 
-export default function Appleretrieve() {
+export default function Samsungretrieve() {
   const [data, setData] = useState(null);
   const swiperRef = useRef(null);
 
@@ -18,7 +18,7 @@ export default function Appleretrieve() {
     async function fetchData() {
       try {
         
-        const response = await fetch('http://localhost:10010/api/v1/products/apple');
+        const response = await fetch('http://localhost:10010/api/v1/products/samsung');
         const data = await response.json();
         console.error(data.products);
 
@@ -89,9 +89,9 @@ export default function Appleretrieve() {
             {data.products.map((item, index) => (
               <SwiperSlide key={index}>
                 <Image
-                  src={item.imagetwo}
+                  src={item.imageone}
                   alt="Picture of the author"
-                  width={230}
+                  width={265}
                   height={300}
                   quality={100}
                 />

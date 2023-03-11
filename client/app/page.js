@@ -8,6 +8,8 @@ import Image from 'next/image'
 import 'swiper/css';
 import 'swiper/css/pagination';
 import RecentItems from './recentitems';
+import Appleretrieve from './appleretrieve';
+import Samsungretrieve from './samsungretrieve';
 
 
 export default function Home() {
@@ -17,6 +19,7 @@ export default function Home() {
   const sectionRef = useRef(null);
   const sectionThreeRef = useRef(null);
   const sectionFourRef = useRef(null);
+  const sectionSixRef = useRef(null);
 
   const swiperData = [
     { 
@@ -51,18 +54,7 @@ export default function Home() {
     }
   
   ];
-  const [widthSize, setWidthSize] = useState(0);
-  //create a function that assigns the screen width to the state so it can be returned
-  const handleResize = () => {
-    setWidthSize(window.innerWidth);
-  }
-  //create an event listener that listens for the resize event and calls the handleResize function
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    }
-  }, []);
+
   //return the widthSize state
 //set the number of the active slide, format it into two digit string
   const handleSwiperItemIndex = () => {
@@ -83,6 +75,10 @@ export default function Home() {
 
   const handleClickThree = () => {
     sectionFourRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  };
+
+  const handleClickFour = () => {
+    sectionSixRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
   };
 
 
@@ -217,7 +213,7 @@ export default function Home() {
       /* ========  */}
       <section className={styles.sectiontwo} ref={sectionRef}>
         <div className={styles.sectiontwodiv}>
-          <h1>NEW ARRIVALS</h1>
+          <h1>IPHONE 14 PRO MAX</h1>
           <Image
               src="https://res.cloudinary.com/dttaprmbu/image/upload/v1678030287/arrowdown_xtrut2.svg"
               alt="arrow-down"
@@ -246,7 +242,7 @@ export default function Home() {
       /* ========  */}
     <section className={styles.sectionfour}>
     <div className={styles.sectionfourdiv}>
-          <h1>APPLE </h1>
+          <h1>APPLE PRODUCTS</h1>
           <Image
               src="https://res.cloudinary.com/dttaprmbu/image/upload/v1678030287/arrowdown_xtrut2.svg"
               alt="arrow-down"
@@ -255,12 +251,24 @@ export default function Home() {
               className="rotate-on-hover" // add a class to trigger the rotation on hover
               onClick={handleClickThree}
           />
-        </div>
+    </div>
         <div className={styles.ovalblurtwo}></div>
     </section>
-    <section className={styles.sectionfive}></section>
-
-
+    <section className={styles.sectionfive} ref={sectionFourRef}><Appleretrieve/></section>
+    <section className={styles.sectionsix}>
+    <div className={styles.sectionsixdiv}>
+          <h1>SAMSUNG PRODUCTS</h1>
+          <Image
+              src="https://res.cloudinary.com/dttaprmbu/image/upload/v1678030287/arrowdown_xtrut2.svg"
+              alt="arrow-down"
+              width={200}
+              height={148}
+              className="rotate-on-hover" // add a class to trigger the rotation on hover
+              onClick={handleClickFour}
+          />
+    </div>
+    </section>
+    <section className={styles.sectionseven} ref={sectionSixRef}><Samsungretrieve/></section>
     </main>
   )
 }

@@ -18,7 +18,7 @@ export default function Samsungretrieve() {
     async function fetchData() {
       try {
         
-        const response = await fetch('http://localhost:10010/api/v1/products/samsung');
+        const response = await fetch('http://localhost:10010/api/v1/products/samsung', { mode: 'cors' });
         const data = await response.json();
         console.error(data.products);
 
@@ -54,13 +54,14 @@ export default function Samsungretrieve() {
       ref={swiperRef}
       slidesPerView={3}
       spaceBetween={10}
+      loop = {true}
       breakpoints={{
         1920: {
           width: 1920,
           slidesPerView: 4,
           },
-        1440: {
-          width: 1440,
+        1450: {
+          width: 1450,
           slidesPerView: 3,
           },
         1200: {
@@ -84,6 +85,14 @@ export default function Samsungretrieve() {
           width: 500,
           slidesPerView: 1,
           },
+        400: {
+            width: 400,
+            slidesPerView: 1,
+            },
+        320: {
+              width: 320,
+              slidesPerView: 1,
+              },
 
     }}
       >
@@ -92,8 +101,8 @@ export default function Samsungretrieve() {
                 <Image
                   src={item.imageone}
                   alt="Picture of the author"
-                  width={265}
-                  height={300}
+                  width={245}
+                  height={280}
                   quality={100}
                 />
               </SwiperSlide>

@@ -72,6 +72,7 @@ export default function RecentItems() {
                     <span>{item.prodname}</span>
                     <span className={styles.pricespan}>{"£"+ item.price}</span>
                     <div className={styles.button}>Check Now</div>
+                    <div>{widthSize}</div>
                 </div>
             </div>
     ))}

@@ -38,5 +38,24 @@ span::after {
 .swiper-slide {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
+@media screen and (min-width: 1439px) {
+  .swiper-slide {
+    justify-content: center;
+  }}
+  
+@media screen and (max-width: 768px) {
+  .swiper-slide {
+    justify-content: center;
+  }}
+
+@media screen and (max-width: 595px) {
+  .swiper-slide {
+    justify-content: space-between;
+    width: 1rem;
+    display: flex;
+    align-items: center;
+    width: 10%;
+  }}
+
+  

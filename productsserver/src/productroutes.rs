@@ -10,6 +10,7 @@ use serde_json::json;
 #[derive(Serialize, FromRow, Debug)]
 
 struct Products {
+    productid: Uuid,
     prodname: String,
     proddescr: String,
     brand: String,
@@ -31,7 +32,7 @@ struct Products {
 
 pub async fn gettwoappleproducts(State(state): State<AppState>) -> impl IntoResponse{
     let response = sqlx::query_as::<_, Products>(
-        "SELECT products.prodname, products.proddescr, products.brand, products.category, 
+        "SELECT products.productid, products.prodname, products.proddescr, products.brand, products.category, 
         products.modelnr, products.availableqty, products.price, 
         productspecs.color, productspecs.productmodel, productspecs.memory, 
         productspecs.rating, productimages.imageone, productimages.imagetwo, 
@@ -67,7 +68,7 @@ pub async fn gettwoappleproducts(State(state): State<AppState>) -> impl IntoResp
 
 pub async fn getappleproducts(State(state): State<AppState>) -> impl IntoResponse{
     let response = sqlx::query_as::<_, Products>(
-        "SELECT products.prodname, products.proddescr, products.brand, products.category, 
+        "SELECT products.productid, products.prodname, products.proddescr, products.brand, products.category, 
         products.modelnr, products.availableqty, products.price, 
         productspecs.color, productspecs.productmodel, productspecs.memory, 
         productspecs.rating, productimages.imageone, productimages.imagetwo, 
@@ -101,7 +102,7 @@ pub async fn getappleproducts(State(state): State<AppState>) -> impl IntoRespons
 
 pub async fn getsamsungproducts(State(state): State<AppState>) -> impl IntoResponse{
     let response = sqlx::query_as::<_, Products>(
-        "SELECT products.prodname, products.proddescr, products.brand, products.category, 
+        "SELECT products.productid, products.prodname, products.proddescr, products.brand, products.category, 
         products.modelnr, products.availableqty, products.price, 
         productspecs.color, productspecs.productmodel, productspecs.memory, 
         productspecs.rating, productimages.imageone, productimages.imagetwo, 
@@ -129,3 +130,38 @@ pub async fn getsamsungproducts(State(state): State<AppState>) -> impl IntoRespo
         }
         
     }
+
+
+    #[debug_handler]
+
+    pub async fn getsingleproduct(State(state): State<AppState>, Path(productid): Path<Uuid>) -> impl IntoResponse{
+        let response = sqlx::query_as::<_, Products>(
+            "SELECT products.productid, products.prodname, products.proddescr, products.brand, products.category, 
+            products.modelnr, products.availableqty, products.price, 
+            productspecs.color, productspecs.productmodel, productspecs.memory, 
+            productspecs.rating, productimages.imageone, productimages.imagetwo, 
+            productimages.imagethree, productimages.imagefour
+            FROM products
+            INNER JOIN productspecs 
+            ON products.modelnr  = productspecs.productmodel
+            INNER JOIN productimages
+            ON products.modelnr = productimages.productmodel
+            where productid = $1"
+
+    )
+        .bind(productid)
+        .fetch_all(&state.database.db)
+        .await;
+        match response {
+            Ok(product) => (StatusCode::OK , Json(json!({
+                "product": product,
+                "status": "success",
+            }))),
+            Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, Json(json!({
+                "status": "error",
+                "message": "Something went wrong",
+                "error": e.to_string(),
+            }))),
+        }
+    }
+    

@@ -50,7 +50,7 @@ export default function Samsungretrieve() {
       <Swiper 
       navigation={true} 
       modules={[Navigation]} 
-      className={styles.myswiperr}
+      className={`${styles.myswiperr} custom-slide`}
       ref={swiperRef}
       slidesPerView={3}
       spaceBetween={10}

@@ -1,8 +1,242 @@
 .footer {
-    background-color: #000;
     color: #fff;
-    padding: 20px;
     text-align: center;
     width: 100%;
-    height: 60vh;
+    background-color: #000235; 
+    display: flex;
+    flex-direction: column;
 }
+.wrapone {
+    display: flex;
+    flex-direction: row;
+    height: 20rem;
+    padding: 0rem 2rem;
+}
+.columnlist {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    height: 10rem;
+    width: 40%;
+    min-width: 10rem;
+}
+
+
+.leftdiv {
+    width: 40%;
+    min-width: 10rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 2rem;
+    text-align: left;
+
+}
+.seconddiv {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 2rem;
+    text-align: left;
+}
+
+.thirddiv {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 2rem;
+    text-align: left;
+}
+.fourthdiv {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 2rem;
+    text-align: left;
+}
+.wrappall {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.wrappall span {
+    width: 80%;
+}
+
+.category img{
+    margin-right: 1rem;
+}
+
+
+
+.newsletter {
+    width: 14rem;
+    height: 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid white;
+    padding: 1rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+}
+
+
+.searchsocial {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap-reverse;
+}
+
+.socials {
+    width: 5.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.socials img {
+    margin-right: 0.8rem;
+}
+.wraptwo {
+    background-color: black;
+    height: 2rem;
+}
+.hiddendiv {
+    display: none;
+}
+
+
+
+
+@media screen and (max-width: 1000px) {
+    .searchsocial {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 8rem;
+        flex-wrap: wrap-reverse;
+    }
+    .newsletter {
+        font-size: 0.8rem;
+        padding: 0.5rem;
+    }
+
+    .leftdiv {
+        display: none;
+    }
+    .seconddiv {
+        width: 33%;
+    }
+    .thirddiv {
+        width: 34%;
+    }
+    .fourthdiv {
+        width: 33%;
+    }
+    .hiddendiv {
+        display: flex;
+        flex-direction: row;
+        padding: 3.5rem;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .socialssmallscreen img{
+        margin-right: 1rem;
+    }
+    .newslettersmallscreen {
+        width: 14rem;
+        height: 3rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        border: 2px solid white;
+        padding: 1rem;
+        border-radius: 0.6rem;
+        cursor: pointer;
+    }
+
+  }
+
+  @media screen and (max-width: 643px) {
+    .footer {
+        font-size: 0.9rem;
+    }
+    .newslettersmallscreen {
+        width: 12rem;
+    }
+  }
+
+  @media screen and (max-width: 570px) {
+
+    .newslettersmallscreen {
+        width: 9rem;
+    }
+    .newslettersmallscreen span{
+        font-size: 0.6rem;
+    }
+
+
+    .wrapone {
+        display: flex;
+        flex-direction: column;
+        height: 50rem;
+        padding: 0rem 2rem;
+        align-items: center;
+    }
+
+    .seconddiv {
+        width: 100%;
+        align-items: center;
+        height: 33%;
+    }
+    .seconddiv h3{
+        font-size: 1.4rem;
+        padding-right: 1rem;
+    }
+    .thirddiv {
+        width: 100%;
+        height: 34%;
+        align-items: center;
+    }
+    .thirddiv h3{
+        font-size: 1.4rem;
+        padding-right: 1rem;
+    }
+    .fourthdiv {
+        width: 100%;
+        height: 33%;
+        align-items: center;
+    }
+    .fourthdiv h3{
+        font-size: 1.4rem;
+        padding-right: 1rem;
+    }
+    .columnlist {
+        font-size: 1.2rem;
+    }
+    .hiddendiv {
+        padding: 1.4rem;
+    }
+    .hiddendiv h3 {
+        font-size: 1.4rem;
+    }
+
+  }
+
+  
+  

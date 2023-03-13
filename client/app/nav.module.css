@@ -66,6 +66,10 @@
     align-items: center;
     justify-content: center;
 }
+.logo a {
+    color: white;
+    text-decoration: none;
+}
 
 .img {
     margin: 0 0.4rem;

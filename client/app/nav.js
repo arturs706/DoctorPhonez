@@ -21,7 +21,7 @@ export default function Nav() {
             <div className={styles.burger}>
                 <Hamburger isOpen={isOpen} handleToggle={handleToggle} />
                 {isOpen && <Navpage />}
-              <div className={styles.logo}><h1>Doctor Phonez</h1></div>
+              <div className={styles.logo}><Link href="/"><h1>Doctor Phonez</h1></Link></div>
             </div>
             <div className={styles.linetwo}>
               <h3>Phones</h3>

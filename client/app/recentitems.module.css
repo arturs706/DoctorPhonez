@@ -67,6 +67,11 @@
     cursor: pointer;
   }
 
+  .button a {
+    text-decoration: none;
+    color: white;
+  }
+
 
 
   .gradient-border-button:hover {

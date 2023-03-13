@@ -10,7 +10,7 @@ use http::header::HeaderValue;
 use http::Method;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 mod productroutes;
-use productroutes::{gettwoappleproducts, getappleproducts, getsamsungproducts};
+use productroutes::{gettwoappleproducts, getappleproducts, getsamsungproducts, getsingleproduct};
 
 
 
@@ -83,6 +83,8 @@ async fn main() {
     .route("/api/v1/products/apple/featured", get(gettwoappleproducts))
     .route("/api/v1/products/apple", get(getappleproducts))
     .route("/api/v1/products/samsung", get(getsamsungproducts))
+    .route("/api/v1/products/:productid", get(getsingleproduct))
+
     .layer(cors)
     .layer(CookieManagerLayer::new())
     .with_state(state);

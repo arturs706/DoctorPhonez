@@ -39,23 +39,33 @@ span::after {
   display: flex;
   align-items: center;
 }
+
+
 @media screen and (min-width: 1439px) {
-  .swiper-slide {
+  .custom-slide .swiper-slide {
     justify-content: center;
-  }}
+  }
+}
   
 @media screen and (max-width: 768px) {
-  .swiper-slide {
+  .custom-slide .swiper-slide {
     justify-content: center;
   }}
 
 @media screen and (max-width: 595px) {
-  .swiper-slide {
+  .custom-slide .swiper-slide {
     justify-content: space-between;
     width: 1rem;
     display: flex;
     align-items: center;
-    width: 10%;
-  }}
+    padding-left: 4rem;
+  }
+  .custom-slide-two .swiper-slide{
+    width: 1rem;
+    display: flex;
+    padding-right: 5rem;
+ 
+  }
+}
 
   

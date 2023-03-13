@@ -17,11 +17,9 @@ export default function Appleretrieve() {
   useEffect(() => {
     async function fetchData() {
       try {
-        
         const response = await fetch('http://localhost:10010/api/v1/products/apple');
         const data = await response.json();
         console.error(data.products);
-
         setData(data);
       } catch (error) {
         console.error(error);
@@ -50,7 +48,7 @@ export default function Appleretrieve() {
       <Swiper 
       navigation={true} 
       modules={[Navigation]} 
-      className={styles.myswiperr}
+      className={`${styles.myswiperr} custom-slide`}
       ref={swiperRef}
       slidesPerView={3}
       spaceBetween={5}

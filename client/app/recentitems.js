@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from './recentitems.module.css'
 import gsap from 'https://cdn.skypack.dev/gsap';
 import { ScrollTrigger } from 'https://cdn.skypack.dev/gsap/ScrollTrigger';
-
+import Link from 'next/link';
 
 export default function RecentItems() {
   const [data, setData] = useState(null);
@@ -71,8 +71,9 @@ export default function RecentItems() {
                     />
                     <span>{item.prodname}</span>
                     <span className={styles.pricespan}>{"£"+ item.price}</span>
-                    <div className={styles.button}>Check Now</div>
-                    <div>{widthSize}</div>
+                    <div className={styles.button}>
+                      <Link href="/products/[id]" as={`/products/${item.productid}`}>Check Now</Link>
+                    </div>
                 </div>
             </div>
     ))}

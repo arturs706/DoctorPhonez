@@ -332,7 +332,9 @@ export default function Home() {
             </div>
       </div>
     </section>
+
     <section className={styles.sectionnine}>
+    <div className={styles.ovalblurfour}></div>
         <h1>TESTIMONIALS</h1>
         <Testimonials/>
     </section>

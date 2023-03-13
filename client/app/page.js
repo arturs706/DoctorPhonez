@@ -242,7 +242,7 @@ export default function Home() {
       /* ========  */}
     <section className={styles.sectionfour}>
     <div className={styles.sectionfourdiv}>
-          <h1>APPLE PRODUCTS</h1>
+          <h1>APPLE PHONES</h1>
           <Image
               src="https://res.cloudinary.com/dttaprmbu/image/upload/v1678030287/arrowdown_xtrut2.svg"
               alt="arrow-down"
@@ -257,7 +257,7 @@ export default function Home() {
     <section className={styles.sectionfive} ref={sectionFourRef}><Appleretrieve/></section>
     <section className={styles.sectionsix}>
     <div className={styles.sectionsixdiv}>
-          <h1>SAMSUNG PRODUCTS</h1>
+          <h1>SAMSUNG PHONES</h1>
           <Image
               src="https://res.cloudinary.com/dttaprmbu/image/upload/v1678030287/arrowdown_xtrut2.svg"
               alt="arrow-down"

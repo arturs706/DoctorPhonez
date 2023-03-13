@@ -17,12 +17,11 @@ export default function Appleretrieve() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('http://localhost:10010/api/v1/products/apple');
-        const data = await response.json();
-        console.error(data.products);
-        setData(data);
+        const response = await fetch('http://localhost:10010/api/v1/products/mobilephones/apple');
+        const datareceived = await response.json();
+        console.log(datareceived.product);
+        setData(datareceived.product);
       } catch (error) {
-        console.error(error);
       }
     }
 
@@ -94,7 +93,7 @@ export default function Appleretrieve() {
 
     }}
       >
-            {data.products.map((item, index) => (
+            {data.map((item, index) => (
               <SwiperSlide key={index}>
                 <Image
                   src={item.imagetwo}

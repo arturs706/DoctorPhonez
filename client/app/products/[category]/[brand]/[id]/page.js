@@ -6,27 +6,31 @@ import Image from 'next/image';
 
 
 export default function Home() {
-  const pathname = usePathname();
+  const category = usePathname();
   const [dataretrvieved, setDataretrvieved] = useState(null)
   const [isLoading, setLoading] = useState(false)
-  const productid = pathname.split("/")[2]
+  const categorysplit = category.split("/")[2]
+  const brand = category.split("/")[3]
+  const id = category.split("/")[4]
+  console.log(categorysplit)
+  console.log(brand)
+  console.log(id)
   useEffect(() => {
     setLoading(true)
     //fetch data from api using a dynamic path
-      fetch(`http://localhost:10010/api/v1/products/${productid}`)
+      fetch(`http://localhost:10010/api/v1/products/${categorysplit}/${brand}/${id}`)
       .then(res => res.json())
       .then(data => {
         setDataretrvieved(data)
         setLoading(false)
       })
     
-  }, [productid]) 
+  }, [category]) 
 
   if (isLoading) return <div className={styles.pagemaindyn}>Loading...</div>
   if (!dataretrvieved) return <div className={styles.pagemaindyn}>No data</div>
   
   if (dataretrvieved.status === "success") {
-    console.log("dataretrvieved", )
 
     return (
       <div className={styles.pagemaindyn}>

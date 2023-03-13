@@ -69,13 +69,13 @@ export default function RecentItems() {
                         quality={100}
                         priority={true}
                     />
-                    <span>{item.prodname}</span>
-                    <span className={styles.pricespan}>{"£"+ item.price}</span>
-                    <div className={styles.button}>
-                      <Link href="/products/[id]" as={`/products/${item.productid}`}>Check Now</Link>
-                    </div>
-                </div>
-            </div>
+              <span>{item.prodname}</span>
+              <span className={styles.pricespan}>{"£"+ item.price}</span>
+              <div className={styles.button}>
+                <Link href="/products/[category]/[brand]/[id]" as={`/products/${item.category}/${item.brand}/${item.productid}`}>Check Now</Link>
+              </div>
+          </div>
+      </div>
     ))}
 
   </div>

@@ -18,9 +18,9 @@ export default function Samsungretrieve() {
     async function fetchData() {
       try {
         
-        const response = await fetch('http://localhost:10010/api/v1/products/samsung', { mode: 'cors' });
+        const response = await fetch('http://localhost:10010/api/v1/products/mobilephones/samsung', { mode: 'cors' });
         const data = await response.json();
-        console.error(data.products);
+        console.log(data.product);
 
         setData(data);
       } catch (error) {
@@ -96,7 +96,7 @@ export default function Samsungretrieve() {
 
     }}
       >
-            {data.products.map((item, index) => (
+            {data.product.map((item, index) => (
               <SwiperSlide key={index}>
                 <Image
                   src={item.imageone}

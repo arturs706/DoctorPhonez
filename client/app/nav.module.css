@@ -41,6 +41,11 @@
     cursor: pointer;
 }
 
+.linetwo a {
+    color: white;
+    text-decoration: none;
+}
+
 .wrappertwo {
     display: flex;
     flex-direction: column;

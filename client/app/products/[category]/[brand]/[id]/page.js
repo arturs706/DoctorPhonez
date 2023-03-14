@@ -3,18 +3,22 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import styles from './page.module.css';
 import Image from 'next/image';
+import { useSelector, useDispatch } from 'react-redux'
+import { addToCart } from '../../../../../redux/reducers/cartSlice'
+
+//import redux slice and actions
 
 
 export default function Home() {
+  // const addtoCart = useSelector((state) => state.counter)
+  const dispatch = useDispatch()
+
   const category = usePathname();
   const [dataretrvieved, setDataretrvieved] = useState(null)
   const [isLoading, setLoading] = useState(false)
   const categorysplit = category.split("/")[2]
   const brand = category.split("/")[3]
   const id = category.split("/")[4]
-  console.log(categorysplit)
-  console.log(brand)
-  console.log(id)
   useEffect(() => {
     setLoading(true)
     //fetch data from api using a dynamic path
@@ -25,7 +29,7 @@ export default function Home() {
         setLoading(false)
       })
     
-  }, [category]) 
+  }, [brand, categorysplit, id]) 
 
   if (isLoading) return <div className={styles.pagemaindyn}>Loading...</div>
   if (!dataretrvieved) return <div className={styles.pagemaindyn}>No data</div>
@@ -53,11 +57,10 @@ export default function Home() {
               <h2>{dataretrvieved.product[0].memory}</h2>
               <h2>{dataretrvieved.product[0].color}</h2>
             </div>
-
-            <div>Add to cart</div>
+            <div className={styles.actionbutton} onClick={() => dispatch(addToCart(dataretrvieved.product[0]), console.log(dataretrvieved.product[0].prodname))}>
+              Add to cart
+            </div>
           </div>
-
-
           </div>
         </div>
       </div>

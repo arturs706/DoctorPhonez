@@ -76,7 +76,11 @@
     filter: blur(100px);
     z-index: 1;
   }
-  /* .pagedyn img{
-    filter: drop-shadow(12px 12px 29px #994ebc);
-  } */
-  
+
+.actionbutton {
+    margin: 0 0.4rem;
+    border: 2px solid white;
+    padding: 0.5rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+}

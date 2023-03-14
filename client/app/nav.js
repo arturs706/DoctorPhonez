@@ -1,16 +1,26 @@
 "use client"; // this is a client component 👈🏽
-
-
 import styles from './nav.module.css'
 import Hamburger from './hamburger'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Navpage from './navpage';
 import Image from 'next/image'
+import { useSelector } from 'react-redux'
 
 
 export default function Nav() {
     const [isOpen, setIsOpen] = useState(false);
+    const cart = useSelector(state => state.counter);
+    const [totalItems, setTotalItems] = useState(0)
+    //total items in cart
+    useEffect(() => {
+      const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+      setTotalItems(totalItems);
+    }, [cart]);
+
+
+
+
     const handleToggle = () => {
         setIsOpen(!isOpen);
       }
@@ -38,7 +48,12 @@ export default function Nav() {
           <div className={styles.linetwoicons}>
             <Image className={styles.img} src="/search.svg" alt="Search" width={25} height={25} />
             <Image className={styles.img} src="/user.svg" alt="User" width={25} height={25} />
-            <Image className={styles.img} src="/cart.svg" alt="Cart" width={25} height={25} />
+            <div className={styles.cartstatus}>
+              <Link href="/cart">
+                <Image className={styles.img} src="/cart.svg" alt="Cart" width={25} height={25}/>
+              </Link>
+              <div className={styles.cartcount}>{totalItems}</div>
+            </div>
           </div>
         </div>
 

@@ -162,7 +162,7 @@ export default function Footer() {
             width={10}
             height={10}
           />
-          <span>Terms & C's</span>
+          <span>Terms & C`&apos;`s</span>
         </div>
         <div className={styles.category}>
           <Image 

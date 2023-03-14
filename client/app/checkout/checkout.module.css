@@ -1,0 +1,62 @@
+.checkoutmain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100%;
+    height: 100vh;
+    background-color: #000235;
+    color: white;
+    position: relative;
+    z-index: 3;
+}
+
+.checkoutform {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width : 48%;
+    height : 58vh;
+    position: relative;
+    z-index: 2;
+    min-width: 400px;  
+    margin: 0rem 0rem;
+    margin-bottom: 2rem;
+  }
+
+  .blurpatch {
+    position: absolute;
+    width: 100%;
+    height: 90vh;
+    -webkit-background: radial-gradient(ellipse at center, rgba(102, 246, 255) 25%, rgba(102, 246, 255,0.2) 25%, rgba(102, 246, 255,0) 100%);
+    -moz-background: radial-gradient(ellipse at center, rgba(102, 246, 255) 25%, rgba(102, 246, 255,0.2) 25%, rgba(102, 246, 255,0) 100%);
+    -o-background: radial-gradient(ellipse at center, rgba(102, 246, 255) 25%, rgba(102, 246, 255,0.2) 25%, rgba(102, 246, 255,0) 100%);
+    -webkit-filter: blur(100px);
+    -moz-filter: blur(100px);
+    -o-filter: blur(100px);
+    background: radial-gradient(ellipse at center, rgba(102, 246, 255) 25%, rgba(102, 246, 255,0.2) 25%, rgba(102, 246, 255,0) 100%);
+    filter: blur(100px);
+    z-index: 1;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 2;
+    padding: 0rem 2rem;
+    text-align: justify;
+    line-height: 1.5;
+
+  }

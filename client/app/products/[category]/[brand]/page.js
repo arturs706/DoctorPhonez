@@ -22,7 +22,7 @@ export default function Home() {
         setLoading(false)
       })
     
-  }, [brand]) 
+  }, [categorysplit, brand]) 
 
   if (isLoading) return <div className={styles.pagemaindyn}>Loading...</div>
   if (!dataretrvieved) return <div className={styles.pagemaindyn}>No data</div>

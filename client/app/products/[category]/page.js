@@ -12,9 +12,6 @@ export default function Home() {
   const categorysplit = category.split("/")[2]
   const brand = category.split("/")[3]
   const id = category.split("/")[4]
-  console.log(categorysplit)
-  console.log(brand)
-  console.log(id)
   useEffect(() => {
     setLoading(true)
     //fetch data from api using a dynamic path
@@ -25,7 +22,7 @@ export default function Home() {
         setLoading(false)
       })
     
-  }, [category]) 
+  }, [categorysplit, brand, id]) 
 
   if (isLoading) return <div className={styles.pagemaindyn}>Loading...</div>
   if (!dataretrvieved) return <div className={styles.pagemaindyn}>No data</div>

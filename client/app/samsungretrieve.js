@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Navigation } from "swiper";
 import Image from 'next/image';
-
+import Link from 'next/link';
 
 export default function Samsungretrieve() {
   const [data, setData] = useState(null);
@@ -98,6 +98,7 @@ export default function Samsungretrieve() {
       >
             {data.product.map((item, index) => (
               <SwiperSlide key={index}>
+              <Link href="/products/[category]/[brand]/[id]" as={`/products/${item.category}/${item.brand}/${item.productid}`}>
                 <Image
                   src={item.imageone}
                   alt="Picture of the author"
@@ -105,6 +106,7 @@ export default function Samsungretrieve() {
                   height={280}
                   quality={100}
                 />
+                </Link>
               </SwiperSlide>
             ))}
 

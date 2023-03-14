@@ -10,7 +10,7 @@ use http::header::HeaderValue;
 use http::Method;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 mod productroutes;
-use productroutes::{gettwoappleproducts, getappleproducts, getsamsungproducts, getsingleproduct};
+use productroutes::{getcategory, getcategorybrandsingle, getcategorybrand, gettwoappleproducts, getallproducts};
 
 
 
@@ -80,10 +80,12 @@ async fn main() {
         stripepubtoken: StripePublicToken { stripepubtoken: stripe_public_secret },
     };
     let app = Router::new()
+    .route("/api/v1/products", get(getallproducts))
     .route("/api/v1/products/apple/featured", get(gettwoappleproducts))
-    .route("/api/v1/products/apple", get(getappleproducts))
-    .route("/api/v1/products/samsung", get(getsamsungproducts))
-    .route("/api/v1/products/:productid", get(getsingleproduct))
+    .route("/api/v1/products/:category", get(getcategory))
+    .route("/api/v1/products/:category/:brand", get(getcategorybrand))
+    .route("/api/v1/products/:category/:brand/:productid", get(getcategorybrandsingle))
+    
 
     .layer(cors)
     .layer(CookieManagerLayer::new())

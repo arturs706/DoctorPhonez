@@ -95,6 +95,7 @@ export default function Appleretrieve() {
       >
             {data.map((item, index) => (
                 <SwiperSlide key={index}>
+                  {/* <h4 className={styles.h4}>{item.prodname}</h4> */}
                   <Link href="/products/[category]/[brand]/[id]" as={`/products/${item.category}/${item.brand}/${item.productid}`}>
                 <Image
                   src={item.imagetwo}

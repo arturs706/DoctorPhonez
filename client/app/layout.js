@@ -3,6 +3,7 @@ import { Roboto } from 'next/font/google'
 import Nav from './nav'
 import Footer from './footer'
 import Providers from './provider'
+import GoogleAnalytic from './ga'
 
 
 
@@ -29,8 +30,10 @@ export default async function RootLayout({ children }) {
   return (
     
     <html lang="en">
+      
       <head />
-      <Providers>
+      <GoogleAnalytic />
+        <Providers>
         <body className={roboto.className}>
           <Nav products={productlist}/>
               {children}

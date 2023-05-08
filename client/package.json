@@ -29,6 +29,7 @@
     "moment": "^2.29.4",
     "next": "13.2.4",
     "next-redux-wrapper": "^8.1.0",
+    "nextjs-google-analytics": "^2.3.3",
     "react": "18.2.0",
     "react-datepicker": "^4.11.0",
     "react-dom": "18.2.0",

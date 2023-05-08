@@ -106,7 +106,7 @@ export default function Home() {
     } else {
 return (
     <div className={styles.main}>
-      <div>
+      <div className={styles.newwrpp}>
         <div className={styles.ovalblurtwo}></div>
         <div className={styles.changedivwrapper}>
             <h4>REGISTER</h4>
@@ -146,7 +146,7 @@ return (
                         <input type="text" id="fullgendername" placeholder='male/female'{...register("gender", {
                             required: "Gender is required",
                             pattern: {
-                                value: /^(male|female)$/,
+                                value: /^[mM][aA][lL][eE]|[fF][eE][mM][aA][lL][eE]$/,
                                 message: "Invalid gender"
                             }
                         })}/>

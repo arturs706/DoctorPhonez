@@ -13,7 +13,6 @@ import refreshToken from '../../../checkCr'
 export default function Home() {
     const router = useRouter()
     const [errorMessage, setErrorMessage] = useState('')
-    const [userEmail, setUserEmail] = useState('')
     const [loading, setLoading] = useState(false)
     const [basicMessage, setBasicMessage] = useState('')
     const dispatch = useDispatch()
@@ -58,16 +57,11 @@ export default function Home() {
       .then((data) => {
           if (data.status === "success") {
               setBasicMessage('Email sent successfully. Please check your email to reset your password')
-
-              //redirect to login page with message
               setTimeout(() => {
                 router.push('/account/login')
               }, 3000)
               
               setLoading(false)
-
-              
-
 
           } else {
               setErrorMessage(data.message)
@@ -77,13 +71,6 @@ export default function Home() {
 
   }
 
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     setIsLoading(true)
-    //     fetch 
-    
-     
 if (loading) {
   return (
     <div className={styles.mainloading}>
@@ -114,7 +101,7 @@ else {
                         <input type="email" id="email" {...register("email", {
                             required: "Email is required",
                             pattern: {
-                                value: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,2}$/, 
+                                value: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)(\.[a-zA-Z]{2,5}){1,3}$/,  
                                 message: "Invalid email"
                             },
                         })}/>

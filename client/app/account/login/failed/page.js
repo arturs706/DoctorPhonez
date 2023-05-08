@@ -21,9 +21,6 @@ useEffect(() => {
 }, [])
 
 
-
-
-
   return (
     <div className={styles.main}>
       <div>

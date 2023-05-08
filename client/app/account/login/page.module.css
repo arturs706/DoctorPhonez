@@ -131,8 +131,6 @@
     width: 19rem;
   }
 
-  
-  
   .buttonwrapper {
     display: flex;
     justify-content: center;
@@ -258,7 +256,7 @@
         flex-direction: column;
     }
     .changediv input {
-        width: 10rem;
+        width: 9.7rem;
         
     }
 
@@ -270,4 +268,118 @@
   .emailinput input{
     width: 98%;
 }
+.passwordWrapper .icon{
+  position: relative;
+  bottom: 3rem;
+  left: 8rem;
+  cursor: pointer;
+  color: var(--main-font-color);
+}
+}
+
+@media screen and (max-width: 375px) {
+  .mainwrapplabel {
+    display: flex;
+    flex-direction: column;
+    padding-left: 1.5rem;
+
   }
+  .changedivwrapper {
+      padding-left: 0rem;
+      padding-right: 0rem;
+      margin-right: 0rem;
+      width: 23.4rem;
+      
+  }
+  .changedivwrapper h4 {
+    padding-left: 1.5rem;
+    
+}
+.changedivwrapper h3 {
+  padding-left: 1.5rem;
+  
+}
+  .changediv {
+      display: flex;
+      flex-direction: column;
+      padding-right: 2.1rem;
+
+  }
+  .changediv input {
+    width: 100%;
+    padding-right: 1.5rem;
+}
+.mainwrapplabel {
+  width: 100%;
+}
+.inputlabelwrapp {
+  width: 100%;
+
+}
+
+.emailinput input{
+  width: 100%;
+
+}
+
+.passwordWrapper .icon{
+position: relative;
+bottom: 3rem;
+left: 17.5rem;
+cursor: pointer;
+color: var(--main-font-color);
+}
+.buttonwrapper {
+  margin-left: 2.5rem;
+ }
+.forgotpassword {
+  margin-left: 1.5rem;
+  margin-top: 0.5rem;
+}
+.line h4{
+  padding-left: 0rem;
+
+}
+}
+
+@media screen and (max-width: 354px) {
+  .main {
+    width: 100%;
+    padding-right: 0rem;
+    margin-right: 0rem;
+
+  }
+  .merz {
+    width: 100%;
+    padding-right: 1.8rem;
+  }
+  .changedivwrapper {
+    width: 100%;
+    
+}
+.passwordWrapper .icon{
+  position: relative;
+  bottom: 3rem;
+  left: 14.6rem;
+  cursor: pointer;
+  color: var(--main-font-color);
+  
+  }
+  .changediv {
+    padding-right: 0rem;
+    margin-right: 0rem;
+    width: 100%;
+  }
+  .mainwrapplabel {
+    width: 100%;
+  }
+  .sociallogindiv {
+    width: 100%;
+    padding-left: 2rem;
+  }
+  .line h4{
+    padding-left: 2rem;
+  
+  }
+  
+}

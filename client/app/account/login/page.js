@@ -198,7 +198,7 @@ if (isLoading) {
 else {
   return (
     <div className={styles.main}>
-      <div>
+      <div className={styles.merz}>
         <div className={styles.ovalblurtwo}></div>
         <div className={styles.changedivwrapper}>
             <h4>LOGIN</h4>

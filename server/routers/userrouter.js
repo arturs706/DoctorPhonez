@@ -243,6 +243,8 @@ const localregemailtext = (userfullname, token) => `
 <p>Dear ${userfullname},</p>
 <p>Thank you for registering with DoctorPhonez! Please click on the link below to confirm your registration:</p>
 <p><div style='margin-top: 20px';> Hello, please click the link below to verify your email address. <br> <a href='${CLIENT_URL}/account/register/${token}'>Verify email</a><div></p>
+<p>If you cannot click on the link, please copy and paste the following URL into your browser:</p>
+<p>${CLIENT_URL}/account/register/${token}</p>
 <p>If you did not register for an account with DoctorPhonez, please disregard this email.</p>
 </div>
 <div style='background-color: #000235; padding: 20px; color: #fff; text-align: center;'>
@@ -292,7 +294,7 @@ const localregemailtext = (userfullname, token) => `
         const hashedPassword = await bcrypt.hash(req.body.passwd, 10);
         const token = generateToken(req.body.email);
         const verificationToken = token.verificationToken;
-        const user = await dbclient.query('INSERT INTO users (usid, fullname, dob, gender, mob_phone, email, passwd, email_ver_token, authmethod, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', [uuid, req.body.fullname, req.body.dob, req.body.gender, req.body.mob_phone, req.body.email, hashedPassword, verificationToken,'local', mysqlTimestamp]);
+        const user = await dbclient.query('INSERT INTO users (usid, fullname, dob, gender, mob_phone, email, passwd, email_ver_token, authmethod, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', [uuid, req.body.fullname, req.body.dob, (req.body.gender).toLowerCase(), req.body.mob_phone, req.body.email, hashedPassword, verificationToken,'local', mysqlTimestamp]);
         if (user.rows.length > 0) {
             // Send verification email
             sendEmailLocal(req.body.email, req.body.fullname, verificationToken);
@@ -444,6 +446,8 @@ const emailupdatetext = (userfullname, link) => `
 <p>Dear ${userfullname},</p>
 <p>You have requested to update your email address for your account with DoctorPhonez. Please click on the link below to confirm your new email address:</p>
 <p><div style='margin-top: 20px';> Hello, please click the link below to verify your new email address. <br> <a href='${link}'>Verify email</a><div></p>
+<p>If you cannot click on the link, please copy and paste the following URL into your browser:</p>
+<p>${link}</p>
 <p>If you did not request to update your email address for your DoctorPhonez account, please disregard this email.</p>
 </div>
 <div style='background-color: #000235; padding: 20px; color: #fff; text-align: center;'>
@@ -811,6 +815,8 @@ const forgotPasswordEmailText = (userFullName, token) => `
 <p>Dear ${userFullName},</p>
 <p>We received a request to reset your password for your account at DoctorPhonez. Please click on the link below to reset your password:</p>
 <p><div style='margin-top: 20px';> Hello, please click the link below to reset your password. <br> <a href='${CLIENT_URL}/account/recover/${token}'>Reset password</a><div></p>
+<p>If you cannot click on the link, please copy and paste the following URL into your browser:</p>
+<p>${CLIENT_URL}/account/recover/${token}</p>
 <p>If you did not request a password reset for your account at DoctorPhonez, please disregard this email.</p>
 </div>
 <div style='background-color: #000235; padding: 20px; color: #fff; text-align: center;'>

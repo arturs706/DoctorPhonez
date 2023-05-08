@@ -5,13 +5,21 @@ import { createSlice } from '@reduxjs/toolkit';
 const getDiscountFromStorage = () => {
   if (typeof localStorage !== 'undefined') {
     const discount = localStorage.getItem('discount');
-    return discount ? JSON.parse(discount) : null;
+    if (discount) {
+      const { value, expiresAt } = JSON.parse(discount);
+      if (expiresAt && expiresAt < Date.now()) {
+        localStorage.removeItem('discount');
+        return null;
+      }
+      return value;
+    }
   }
   return null;
 };
 
-const setDiscountToStorage = (discountAmount) => {
-  localStorage.setItem('discount', JSON.stringify(discountAmount));
+const setDiscountToStorage = (discountAmount, expirationTime) => {
+  const discount = { value: discountAmount, expiresAt: expirationTime };
+  localStorage.setItem('discount', JSON.stringify(discount));
 };
 
 export const discountSlice = createSlice({
@@ -22,11 +30,11 @@ export const discountSlice = createSlice({
   reducers: {
     setDiscountSlice: (state, action) => {
       state.discountAmount = action.payload;
-      setDiscountToStorage(action.payload);
+      setDiscountToStorage(action.payload, Date.now() + 60 * 1000);
     },
     clearDiscountSlice: (state) => {
       state.discountAmount = null;
-      setDiscountToStorage(null);
+      localStorage.removeItem('discount');
     },
   },
 });

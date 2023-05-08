@@ -89,6 +89,7 @@ useEffect(() => {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
+                            discountAmount: discountAmount !== null ? discountAmount : 0,
                             amount: total,
                             email: data.data.email,
                             fullname: fullnameconcat,
@@ -107,13 +108,12 @@ useEffect(() => {
                         .then((res) => res.json())
                         .then((data) => 
                         setClientSecret(data.clientSecret),
-                        
                         );
                     }
                 });
         }
     })
-}, [cart, dispatch, router])
+}, [cart, dispatch, router, discountAmount])
 
 
 
@@ -333,7 +333,7 @@ useEffect(() => {
                     <div className={styles.stepper}>
                         <div className={styles.imgwrap}>
                         <Image 
-                            src = "1.svg"
+                            src = "https://res.cloudinary.com/dttaprmbu/image/upload/v1683463187/etc/a7405a6339fcca992680b63161d0bc9f.svg"
                             alt = "1"
                             width = {60}
                             height = {60}
@@ -341,7 +341,7 @@ useEffect(() => {
                         <div className={styles.nameof}>Delivery</div>
                         </div>
                         <Image
-                            src = "active.svg"
+                            src = "https://res.cloudinary.com/dttaprmbu/image/upload/v1683463206/etc/54223715347cc41cf1e876a8b27c9533.svg"
                             alt = "2"
                             width = {100}
                             height = {60}
@@ -349,7 +349,7 @@ useEffect(() => {
                         
                         <div className={styles.imgwrap}>
                         <Image 
-                            src = "2.svg"
+                            src = "https://res.cloudinary.com/dttaprmbu/image/upload/v1683463223/etc/e272df119b0ab5383670b289a1048720.svg"
                             alt = "1"
                             width = {60}
                             height = {60}
@@ -357,14 +357,14 @@ useEffect(() => {
                         <div className={styles.nameof}>Payment</div>
                         </div>
                         <Image
-                            src = "inactive.svg"
+                            src = "https://res.cloudinary.com/dttaprmbu/image/upload/v1683463250/etc/83f909e433fb4258ff2a152145f27186.svg"
                             alt = "2"
                             width = {100}
                             height = {60}
                         />
                        <div className={styles.imgwrap}>
                         <Image 
-                            src = "last.svg"
+                            src = "https://res.cloudinary.com/dttaprmbu/image/upload/v1683463271/etc/f1eb2f53c0a9cbf10334d5dc6f1041c4.svg"
                             alt = "1"
                             width = {60}
                             height = {60}

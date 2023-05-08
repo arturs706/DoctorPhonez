@@ -148,7 +148,7 @@ if (loading) {
             <div className={styles.messagerightdivh2}>Manage the available discount codes</div>
           </div>
           </Link>
-          <Link href="/account/settings/protectedroute/salesreport" className={styles.divobj}>
+          <Link href="/account/settings/protectedroute/manageproducts" className={styles.divobj}>
           <div>
             <div className={styles.headline}>Update product details</div>
             <div className={styles.messagerightdivh2}>Keep up to date the stock details</div>

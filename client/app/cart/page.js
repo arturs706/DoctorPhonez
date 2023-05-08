@@ -38,12 +38,13 @@ export default function Page() {
     const [discountMessage, setDiscountMessage] = useState('')
     const [discountErrorMessage, setDiscountErrorMessage] = useState('')
     const [discountAmountEff, setDiscountAmountEff] = useState(null)
+    const [isScreenSize, setIsScreenSize] = useState(false)
+    const [isAvailable, setIsAvailable] = useState(true)
 
 
 
 
     const handleClick = () => {
-
         if (mobilePhone === null || mobilePhone === "") {
             setIsModalOpen(true)
         }
@@ -65,12 +66,7 @@ export default function Page() {
         }
         
       };
-    
-      const handleModalToggle = (orderId) => {
-        setIsModalOpen(true);
-        setOrderProps(orderId);
-      }
-    
+
       const handleModalClose = () => {
         setIsModalOpen(false);
       };
@@ -149,28 +145,66 @@ export default function Page() {
             }
         }, [cart, dispatch])
 
+          useEffect(() => {
+            const handleResize = () => {
+            if (window.innerWidth < 840) {
+                setIsScreenSize(true);
+            } else {
+                setIsScreenSize(false);
+            }
+            };
+
+            handleResize();
+
+            window.addEventListener('resize', handleResize);
+
+            return () => window.removeEventListener('resize', handleResize);
+        }, []);
+
+            
 
       function printFifthDay() {
         const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         const today = new Date();
         const fifthDay = new Date(today);
         fifthDay.setDate(today.getDate() + 5);
-
         const date = fifthDay.getDate();
         const suffix = date === 11 || date === 12 || date === 13 ? 'th' : (date % 10 === 1 ? 'st' : (date % 10 === 2 ? 'nd' : (date % 10 === 3 ? 'rd' : 'th')));
-      
         const monthOfYear = monthsOfYear[fifthDay.getMonth()];
-      
         return `Arrives by ${date}${suffix} of ${monthOfYear}`;
       }
 
-    
+      const handleAddToCart = (product) => {
+        setLoading(true)
+        fetch(process.env.NEXT_PUBLIC_API_URL + `api/v1/products/addproductToCart`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              removeItem: 1,
+              productId: product.productid,
+            })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.status === "success") {
+            dispatch(addToCart(product))
+            setLoading(false)
+            } else {
+                setIsAvailable(false)
+                setLoading(false)
+            }
+            
+        })
+        .catch((err) => console.log(err))
+      }
       
       
 
     useEffect(() => {
         const dataRetrieve = cart.map((item) => {
             return {
+                productid: item.productid,
+                availableqty: item.availableqty,
                 prodname: item.prodname,
                 quantity: item.quantity,
                 price: item.price,
@@ -182,6 +216,7 @@ export default function Page() {
         if (discountAmount !== null) {
             setDiscountAmountEff(discountAmount)
         }
+     
         setData(dataRetrieve)
         setTotal(total)
         if (totalItems === 0) {
@@ -193,14 +228,76 @@ export default function Page() {
 
 
 
-    const handleProductAdd = (prodname) => {
-        dispatch(incrementQuantity(prodname))
+    const handleProductAdd = (productid, availableQty, qtyincart) => {
+        setLoading(true)
+        fetch(process.env.NEXT_PUBLIC_API_URL + `api/v1/products/addproductToCart`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              removeItem: 1,
+              productId: productid,
+            })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.status === "success") {
+                dispatch(incrementQuantity(productid))
+                setLoading(false)
+            } else {
+                setIsAvailable(false)
+                setLoading(false)
+            }
+            
+        })
+        .catch((err) => console.log(err))
+        console.log(productid, availableQty, qtyincart)
     }
-    const handleProductDecrement = (prodname) => {
-        dispatch(decrementQuantity(prodname))
+
+
+    const handleProductDecrement = (productid) => {
+        setLoading(true)
+        fetch(process.env.NEXT_PUBLIC_API_URL + `api/v1/products/removeproductFromCart`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                addItem: 1,
+                productId: productid,
+            })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.status === "success") {
+                dispatch(decrementQuantity(productid))
+                setLoading(false)
+            } else {
+                setIsAvailable(false)
+                setLoading(false)
+            }
+        })
+        .catch((err) => console.log(err))
     }
-    const handleProductRemove = (prodname) => {
-        dispatch(removeFromCart(prodname))
+
+    const handleProductRemove = (productid, productqty) => {
+        setLoading(true)
+        fetch(process.env.NEXT_PUBLIC_API_URL + `api/v1/products/removeproductFromCart`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                addItem: productqty,
+                productId: productid,
+            })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.status === "success") {
+                dispatch(removeFromCart(productid))
+                setLoading(false)
+            } else {
+                setIsAvailable(false)
+                setLoading(false)
+            }
+        })
+        .catch((err) => console.log(err))
     }
 
     //create a function to format the price to 2 decimal places
@@ -271,10 +368,6 @@ export default function Page() {
                 , 3000)
                 dispatch(setDiscountSlice(data.discount))
                 setDiscountAmountEff(data.discount)
-                // setDiscount(data.data.discount)
-                // setDiscountCode("")
-                // setDiscountApplied(true)
-                // setDiscountMessage("Discount applied")
             } else {
                 setDiscountMessage("Discount not applied")
                 setTimeout(() => {
@@ -289,10 +382,13 @@ export default function Page() {
 
 
     if (loading) {
-    return (
-        <div className={styles.cartmain}><Loader/></div>
-    )
-} else {
+        return (
+            <div className={styles.cartmainloader}>
+                <div className={styles.ovalblur}></div>
+                <Loader/>
+            </div>
+        )
+    } else {
 
 
     return (
@@ -537,8 +633,7 @@ export default function Page() {
 
                     <h2 className={styles.tiyle}>Your order</h2>
                     <div className={styles.productwrapp}>
-                    {data.map((item, index) => (
-        
+                    {data.map((item, index) => (   
                     <div key={index} >
                         <div className={styles.binwrapp}>
                         <h4>{item.prodname}</h4>
@@ -547,7 +642,7 @@ export default function Page() {
                             alt = "bin"
                             width = {20}
                             height = {20}
-                            onClick={() => handleProductRemove(item.prodname)}
+                            onClick={() => handleProductRemove(item.productid, item.quantity)}
                         />
 
                         </div>
@@ -561,9 +656,13 @@ export default function Page() {
                         <div className={styles.quantity}>
                         <h4>Quantity</h4>
                         <div className={styles.itemqtywrap}>
-                            <div className={styles.addremoveitm} onClick={() => handleProductDecrement(item.prodname)}>-</div>
+                            <button className={styles.addremoveitm} onClick={() => handleProductDecrement(item.productid, item.availableqty, item.quantity)}>-</button>
                             <div ><h4>{item.quantity}</h4></div>
-                            <div className={styles.addremoveitm} onClick={() => handleProductAdd(item.prodname)}>+</div>
+                            <button className={styles.addremoveitm} 
+                            onClick={() => handleProductAdd(item.productid, item.availableqty, item.quantity)
+                            }
+                            disabled={(item.availableqty === item.quantity)}
+                            >+</button>
                         </div>
                         {
                             discountAmountEff 
@@ -633,7 +732,9 @@ export default function Page() {
                         {errorMessage ? <div className={styles.errormessage}>{errorMessage}</div> : null}
                         </div>
 
-                        <form className={styles.discountcodesmal} onSubmit={handlediscount}>
+                        <form className={styles.discountcodesmal} onSubmit={handlediscount}
+                        style={((discountAmountEff === null) && isScreenSize) ? {display: 'flex'} : {display: 'none'}}
+                        >
                             <h4>Discount code</h4>
                             <input type="text" placeholder="Enter your code" onChange={handleDC}/>
                             <button type='submit'>Apply</button>
@@ -647,7 +748,7 @@ export default function Page() {
                     </div>
 
                     <form className={styles.discountcode} onSubmit={handlediscount}
-                    style={discountAmountEff ? {display: 'none'} : {display: 'flex'}}
+                        style={((discountAmountEff === null) && !isScreenSize) ? {display: 'flex'} : {display: 'none'}}
                     
                     >
                         <h4>Discount code</h4>

@@ -21,7 +21,7 @@ export const cartSlice = createSlice({
   initialState: getCartFromStorage(),
   reducers: {
     addToCart: (state, action) => {
-      const itemExists = state.find((item) => item.prodname === action.payload.prodname);
+      const itemExists = state.find((item) => item.productid === action.payload.productid);
       if (itemExists) {
         itemExists.quantity += 1;
       } else {
@@ -30,28 +30,28 @@ export const cartSlice = createSlice({
       setCartToStorage(state);
     },
     removeFromCart: (state, action) => {
-      const newState = state.filter((item) => item.prodname !== action.payload);
+      const newState = state.filter((item) => item.productid !== action.payload);
       setCartToStorage(newState);
       return newState;
     },
     incrementQuantity: (state, action) => {
-      const item = state.find((item) => item.prodname === action.payload);
+      const item = state.find((item) => item.productid === action.payload);
       item.quantity += 1;
       setCartToStorage(state);
     },
     decrementQuantity: (state, action) => {
-      const item = state.find((item) => item.prodname === action.payload);
+      const item = state.find((item) => item.productid === action.payload);
       if (item.quantity > 1) {
         item.quantity -= 1;
         setCartToStorage(state);
       } else if (item.quantity === 1) {
-        const newState = state.filter((item) => item.prodname !== action.payload);
+        const newState = state.filter((item) => item.productid !== action.payload);
         setCartToStorage(newState);
         return newState;
       }
     },
     changeTheQuantity: (state, action) => {
-      const item = state.find((item) => item.prodname === action.payload.prodname);
+      const item = state.find((item) => item.productid === action.payload.productid);
       item.quantity = action.payload.quantity;
       setCartToStorage(state);
     },

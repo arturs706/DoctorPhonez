@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 var moment = require('moment'); 
 const cloudinary = require('cloudinary').v2;
+const authenticateToken = require('../middleware/authz')
 
 
 
@@ -73,6 +74,36 @@ const query_category = `SELECT products.productid, products.prodname, products.p
     ON products.modelnr = productimages.productmodel
     where products.category = $1
 `;
+
+router.post('/addproductToCart', bodyParser.json(), async (req, res) => {
+  const {removeItem, productId} = req.body;
+  try {
+      const getItemQty = await client.query("SELECT availableqty FROM products WHERE productid = $1", [productId]);
+      if (getItemQty.rows[0].availableqty < removeItem) {
+          res.status(400).json({ "status": "failed", "message": "Item is out of stock"});
+      } else {
+          const remove = await client.query("UPDATE products SET availableqty = availableqty - $1 WHERE productid = $2", [removeItem, productId]);
+          res.status(200).json({ products: remove.rows, "status": "success" });
+      }
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Something went wrong' });
+  }
+});
+
+router.post('/removeproductFromCart', bodyParser.json(), async (req, res) => {
+    const {addItem, productId} = req.body;
+
+    try {
+        const remove = await client.query("UPDATE products SET availableqty = availableqty + $1 WHERE productid = $2", [addItem, productId]);
+        res.status(200).json({ products: remove.rows, "status": "success" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+        }
+});
+
+
 
 router.get('/:category', bodyParser.json(), async (req, res) => {
     const category = req.params.category;
@@ -294,15 +325,162 @@ router.post('/uploadproduct', bodyParser.json({ limit: '50mb' }), async (req, re
 })
 
 
+router.put('/updateproduct/:modelnr', bodyParser.json({ limit: '50mb' }), authenticateToken, async (req, res) => {
+  const modelnr = req.params.modelnr;
+  const userRole = req.user.role;
+  if (userRole !== 'admin') {
+    res.status(401).json({ error: 'Unauthorized' });
+    return;
+  }
+  const {
+    prodname,
+    proddescr,
+    brand,
+    category,
+    availableqty,
+    price,
+    color,
+    memory,
+    imageone,
+    imagetwo,
+    imagethree,
+    imagefour
+  } = req.body;
+  const availablequantity = parseInt(availableqty);
 
+  const UPDATE_PRODUCT = `UPDATE products SET prodname = $1, proddescr = $2, brand = $3, category = $4, availableqty = $5, price = $6 WHERE modelnr = $7`;  
+  const UPDATE_PRODUCT_SPEC = `UPDATE productspecs SET color = $1, memory = $2 WHERE productmodel = $3`;
+  
+  cloudinary.config(process.env.CLOUDINARY_URL);
 
+  try {
+    if (!imageone.startsWith("https")) {
+      const uploadresone = await cloudinary.uploader.upload(imageone, {
+        upload_preset: "l7gdiaso",
+        transformation: [
+            {
+              width: 635,
+              height: 866,
+              crop: "scale",
+              aspect_ratio: "635:866"
+            },
+            {
+              width: 635,
+              height: 866,
+              crop: "fill",
+              gravity: "center",
+              background: "transparent"
+            }
+          ],
+      });
+      if (uploadresone) {
+        const firstImage = uploadresone.secure_url;
+        await client.query("UPDATE productimages SET imageone = $1 WHERE productmodel = $2", [firstImage, modelnr]);
+      } else {
+        res.status(500).json({ error: 'Something went wrong' });
+        return;
+      }
+    }
+    if (!imagetwo.startsWith("https")) {
+      const uploadrestwo = await cloudinary.uploader.upload(imagetwo, {
+        upload_preset: "l7gdiaso",
+        transformation: [
+            {
+              width: 635,
+              height: 866,
+              crop: "scale",
+              aspect_ratio: "635:866"
+            },
+            {
+              width: 635,
+              height: 866,
+              crop: "fill",
+              gravity: "center",
+              background: "transparent"
+            }
+          ],
+      });
+      if (uploadrestwo) {
+        const secondImage = uploadrestwo.secure_url;
+        await client.query("UPDATE productimages SET imagetwo = $1 WHERE productmodel = $2", [secondImage, modelnr]);
+      } else {
+        res.status(500).json({ error: 'Something went wrong' });
+        return;
+      }
+    }
+    if (!imagethree.startsWith("https")) {
+      const uploadresthree = await cloudinary.uploader.upload(imagethree, {
+        upload_preset: "l7gdiaso",
+        transformation: [
+            {
+              width: 635,
+              height: 866,
+              crop: "scale",
+              aspect_ratio: "635:866"
+            },
+            {
+              width: 635,
+              height: 866,
+              crop: "fill",
+              gravity: "center",
+              background: "transparent"
+            }
+          ],
+      });
+      if (uploadresthree) {
+        const thirdImage = uploadresthree.secure_url;
+        await client.query("UPDATE productimages SET imagethree = $1 WHERE productmodel = $2", [thirdImage, modelnr]);
+      } else {
+        res.status(500).json({ error: 'Something went wrong' });
+        return;
+      }
+    }
+    if (!imagefour.startsWith("https")) {
+      const uploadresfour = await cloudinary.uploader.upload(imagefour, {
+        upload_preset: "l7gdiaso",
+        transformation: [
+            {
+              width: 635,
+              height: 866,
+              crop: "scale",
+              aspect_ratio: "635:866"
+            },
+            {
+              width: 635,
+              height: 866,
+              crop: "fill",
+              gravity: "center",
+              background: "transparent"
+            }
+          ],
+      });
+      if (uploadresfour) {
+        const fourthImage = uploadresfour.secure_url;
+        await client.query("UPDATE productimages SET imagefour = $1 WHERE productmodel = $2", [fourthImage, modelnr]);
+      } else {
+        res.status(500).json({ error: 'Something went wrong' });
+        return;
+      }
+    }
 
+    await client.query(UPDATE_PRODUCT, [
+      prodname,
+      proddescr,
+      (brand).toLowerCase(),
+      (category).toLowerCase(),
+      availablequantity,
+      price,
+      modelnr,
+    ]);
+    await client.query(UPDATE_PRODUCT_SPEC, [color, memory, modelnr]);
+    res.status(200).json({ message: 'Product updated successfully'});
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Something went wrong' });
+    return;
+  }
+})
 
-
-//create a route that will delete a particular product
-// router.delete('/deleteproduct/:productid', async (req, res) => {
-//     const productid = req.params.productid;
-//     const DELETE_PRODUCT = `DELETE FROM products WHERE productid = $1`;
 
 
 module.exports = router;

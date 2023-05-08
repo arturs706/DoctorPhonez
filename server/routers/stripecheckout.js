@@ -126,10 +126,9 @@ try {
 switch (event.type) {
   case "charge.succeeded":
   const session = event.data.object;
-  console.log(session.payment_method_details);
-  console.log(session.metadata.orderdet);
-  const parseAddress = JSON.parse(session.metadata.address);
 
+  const parseAddress = JSON.parse(session.metadata.address);
+  const discount = JSON.parse(session.metadata.discountAmount);
   //check the data type of session.payment_intent
     const parseJSON = JSON.parse(session.metadata.orderdet)
     //create a new array to store the product names along with the quantities
@@ -155,7 +154,7 @@ switch (event.type) {
         image_url: product.rows[0].imageone,
         product_name: product.rows[0].prodname,
         quantity: item.quantity,
-        price: product.rows[0].price,
+        price: (product.rows[0].price * (1 - discount)).toFixed(2),
         color: product.rows[0].color,
         memory: product.rows[0].memory
       });

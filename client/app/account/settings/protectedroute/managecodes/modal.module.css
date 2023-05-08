@@ -371,5 +371,30 @@
     display: flex;
     align-items: center;
   }
+  .embla {
+    overflow: hidden;
+    width: 100%;
+    margin: 0rem 1rem;
+  
+  }
+  .emblacontainer {
+    display: flex;
+    flex-direction: row;
+    
+  }
+  
+  .slide {
+    flex: 0 0 13%;
+    margin-left: 0.1rem;
+    margin-right: 0.15rem;
+    height: 3rem;
+    
+  }
+  .slide h4 {
+    font-size: 0.43rem;
+    font-weight: 300;
+    color: var(--main-font-color);
+   
+  }
 }
   

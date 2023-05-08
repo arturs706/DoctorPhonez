@@ -442,7 +442,7 @@ const ProductTable = ({ products }) => {
                         }
                     });
                     }}/>
-                    <label htmlFor="yellow">yellow</label>
+                    <label htmlFor="yellow">Yellow</label>
                     </div>
                     <br/>
                     <div className={styles.inputwrapper}>

@@ -75,7 +75,6 @@ const establishConnection = async () => {
     const discountid = uuidv4();
     const mysqlTimestamp = moment().format('YYYY-MM-DD HH:mm:ss');
     const timemoment = moment(expiry).format('dddd MMMM DD HH:mm:ss YYYY');
-    console.log(timemoment);
     const discountPercentage = discount / 100;
     const INSERT_DISCOUNTCODE = `INSERT INTO discount_codes (id, code, discount, expiration_date, created_at, updated_at) VALUES ($1, $2, $3, to_timestamp($4, 'Day Month DD HH24:MI:SS YYYY'), $5, $6)`;
     try {
@@ -85,10 +84,9 @@ const establishConnection = async () => {
         const SELECT_ALL_USERS = `SELECT email, fullname, email_ver FROM users`;
         const { rows } = await client.query(SELECT_ALL_USERS);
         rows.forEach(async (user) => {
-            // check if email_ver is true
             if (user.email_ver) {
             try {
-                await sendDiscountEmail(user.email, user.fullname, code, discount, expiry);
+                await sendDiscountEmail(user.email, user.fullname, code, discount, timemoment);
             } catch (error) {
                 console.error(error);
                 res.status(500).json({ status: "error", error: error });

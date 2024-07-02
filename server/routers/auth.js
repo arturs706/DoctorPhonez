@@ -14,12 +14,10 @@ router.post('/login', bodyParser.json(), async (req, res) => {
         const {email, passwd} = req.body;
         
         const user = await client.query('SELECT * FROM users WHERE email = $1', [email]);
-        //check the length of the array
         if (user.rows.length === 0) {return res.status(401).json({"status": "error", "message": "Incorrect email or password"})}
         if (user.rows[0].authmethod === 'google' || user.rows[0].authmethod === 'facebook') {
             return res.status(403).json({"status": "error", "message": "You cannot login using this method"});
         }
-        //check if user is verified
         const isunderverification = await client.query("SELECT email_ver FROM users WHERE email = $1", [req.body.email]);
         if (isunderverification.rows.length > 0) {
             if (isunderverification.rows[0].email_ver === false) {

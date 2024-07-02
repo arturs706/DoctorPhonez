@@ -17,9 +17,7 @@ const Modal = (props) => {
   };
 
   function removeStr(str) {
-    //removem SIM Free from the string
     const newStr = str.replace('SIM Free', '')
-    //remove the dash from the string
     return newStr.replace(/-/g, '')
   }
   

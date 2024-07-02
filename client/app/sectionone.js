@@ -29,13 +29,11 @@ export default function Sectionone(props) {
 
   useEffect(() => {
     function selectHandler() {
-      // selectedScrollSnap gives us the current selected index.
       const index = emblaApi?.selectedScrollSnap();
       console.log(index);
     }
 
     emblaApi?.on("select", selectHandler);
-    // cleanup
     return () => {
       emblaApi?.off("select", selectHandler);
     };
@@ -45,7 +43,6 @@ export default function Sectionone(props) {
 
   useEffect(() => {
     function selectHandler() {
-      // selectedScrollSnap gives us the current selected index.
       const index = emblaApi?.selectedScrollSnap();
       setSelectedIndex(index || 0);
     }
@@ -56,9 +53,6 @@ export default function Sectionone(props) {
       emblaApi?.off("select", selectHandler);
     };
   }, [emblaApi, selectedIndex]);
-
-
-
 
   const checkFormatedTextg = useCallback(() => {
     const swiper = selectedIndex;
@@ -71,8 +65,6 @@ export default function Sectionone(props) {
   useEffect(() => {
     checkFormatedTextg();
   }, [checkFormatedTextg]);
-
-
 
   const canScrollNext = !!emblaApi?.canScrollNext();
   const canScrollPrev = !!emblaApi?.canScrollPrev();
@@ -233,7 +225,7 @@ export default function Sectionone(props) {
               alt="arrow-down"
               width={50}
               height={37}
-              className={styles.rotateonhover} // add a class to trigger the rotation on hover
+              className={styles.rotateonhover} 
               onClick={handleClick}
             />
             <div className={styles.divfade}>Scroll Down</div>

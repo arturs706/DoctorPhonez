@@ -67,11 +67,8 @@ import { useDispatch } from 'react-redux';
     
       const handleSubmit = async (e) => {
         e.preventDefault();
-        
     
         if (!stripe || !elements) {
-          // Stripe.js has not yet loaded.
-          // Make sure to disable form submission until Stripe.js has loaded.
           return;
         }
         
@@ -80,8 +77,7 @@ import { useDispatch } from 'react-redux';
         const { error } = await stripe.confirmPayment({
           elements,
           confirmParams: {
-            return_url: process.env.NEXT_PUBLIC_API_URL_INTERNAL + `payment/success/`
-            // return_url: "http://localhost:3000/payment/success/"
+            return_url: process.env.NEXT_PUBLIC_CLIENT_URL + `payment/success/`
           },
           
         });

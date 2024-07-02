@@ -28,8 +28,6 @@ export default function Sectionthree() {
   const [errormessage, setErrormessage] = useState('');
 
 
-
-
   useEffect(() => {
     try {
       getRecentIphone().then((data) => {
@@ -43,11 +41,11 @@ export default function Sectionthree() {
 
   useEffect(() => {
     if (widthSize < 880 && (widthSize !== 0)) {
-      setW(355);
-      setH(438);
+      setW(240);
+      setH(300);
     } else {
-      setW(324); 
-      setH(400); 
+      setW(210); 
+      setH(350); 
     }
   }, [widthSize]);
 

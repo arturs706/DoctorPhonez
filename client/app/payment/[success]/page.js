@@ -17,11 +17,6 @@ export default function Page() {
   const search = searchParams.get('payment_intent');
 
 
-  //create a function to check the size of the screen and change the widht and height of the image
-
-
-  
-
 
   useEffect(() => {
       async function checkRefreshToken() {

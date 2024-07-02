@@ -6,19 +6,10 @@ const generateToken = ({id, email}) => {
     const user = {id, email};
     let role = [];
     switch (email) {
-        case '21515838@student.uwl.ac.uk':
+        case 'artdevldn@gmail.com':
             role = 'admin';
             break;
-        case '21437262@student.uwl.ac.uk':
-            role = 'admin';
-            break;
-        case '21482994@student.uwl.ac.uk':
-            role = 'admin';
-            break;
-        case '21461264@student.uwl.ac.uk':
-            role = 'admin';
-            break;
-        case '20215493@student.uwl.ac.uk':
+        case 'radionovsarturs@gmail.com':
             role = 'admin';
             break;
         case 'aradionovs@yahoo.com':

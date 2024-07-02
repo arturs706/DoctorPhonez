@@ -11,7 +11,6 @@ import Link from 'next/link';
 import Loader from '@/app/Loader';
 
 
-
 export default function Page() {
   const dispatch = useDispatch()
   const router = useRouter()
@@ -24,7 +23,6 @@ export default function Page() {
   useEffect(() => {
     setIsLoading(true)
     fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/refresh_token', {
-    // fetch("https://pm.doctorphonez.co.uk/api/v1/refresh_token", {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -44,7 +42,6 @@ export default function Page() {
             const isExpired = (exp * 1000) < new Date().getTime()
             dispatch(setTokenExp(isExpired))
             fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/profile', {
-            // fetch("https://pm.doctorphonez.co.uk/api/v1/profile", {
                 method: "GET",
                 headers: { "Content-Type": "application/json", "Authorization": `Bearer ${data.accessToken}` },
             })

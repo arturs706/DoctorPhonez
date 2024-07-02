@@ -21,7 +21,7 @@ INNER JOIN productspecs
 ON products.modelnr  = productspecs.productmodel
 INNER JOIN productimages
 ON products.modelnr = productimages.productmodel
-WHERE products.prodname LIKE '%SIM Free iPhone 14 Pro Max 5G 256GB Mobile Phone%'
+WHERE products.prodname LIKE '%SIM Free iPhone%'
 ORDER BY random()
 LIMIT 2;
 `;

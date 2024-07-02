@@ -10,7 +10,6 @@ import Autoplay from 'embla-carousel-autoplay'
 
 async function getAppleItems() {
     return await (await fetch (process.env.NEXT_PUBLIC_API_URL + `api/v1/products/mobilephones/apple`)).json();
-    // return await (await fetch (`https://pm.doctorphonez.co.uk/api/v1/products/mobilephones/apple`)).json();
   }
 
   
@@ -48,10 +47,10 @@ export default function Sectionfive() {
                 <Link href="/products/[category]/[brand]/[id]" as={`/products/${item.category}/${item.brand}/${item.productid}`}>
 
                 <Image
-                      src={item.imageone}
-                      alt = {item.prodname}
-                    width={230}
-                    height={300}
+                    src={item.imageone}
+                    alt = {item.prodname}
+                    width={205}
+                    height={280}
                     quality={100}
                 />
                 </Link>

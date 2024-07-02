@@ -114,7 +114,6 @@ res.status(500).json({ error: 'Failed to send email' });
 
 router.post("/webhooks", express.raw({ type: "application/json" }), async(request, response) => {
 const sig = request.headers["stripe-signature"];
-// stripe
 let event;
 try {
   event = stripe.webhooks.constructEvent(request.body, sig, webhookSecret);
@@ -126,17 +125,13 @@ try {
 switch (event.type) {
   case "charge.succeeded":
   const session = event.data.object;
-
+  console.log(session);
   const parseAddress = JSON.parse(session.metadata.address);
   const discount = JSON.parse(session.metadata.discountAmount);
-  //check the data type of session.payment_intent
     const parseJSON = JSON.parse(session.metadata.orderdet)
-    //create a new array to store the product names along with the quantities
     const products = [];
-    //retrieve all product names from SQL database using the modelnr, and then add it to the parseJSON array
     for (let i = 0; i < parseJSON.length; i++) {
       const item = parseJSON[i];
-      //retrieve the product name and price from the database
       const product = await client.query(`SELECT 
       products.prodname, 
       products.price, 
@@ -149,7 +144,6 @@ switch (event.type) {
       INNER JOIN productspecs ON products.modelnr = productspecs.productmodel
   WHERE 
       products.modelnr = '${item.modelnr}'`);
-      //add the product name, price and imagetwo to the products array along with the quantity
       products.push({
         image_url: product.rows[0].imageone,
         product_name: product.rows[0].prodname,
@@ -160,11 +154,7 @@ switch (event.type) {
       });
     }
     
-    
-    
-    //insert into the the userorders table the payment id, the user id and the total amount
     if (session.payment_method_details.type === "card" && session.payment_method_details.card.wallet === null){
-    //convert session.payment_method_details.card.last4 to a string to be able to insert it into the database
     const last4 = session.payment_method_details.card.last4.toString();
     client.query(`insert into userorders VALUES ('${session.payment_intent}', '${session.metadata.userid}', '${session.metadata.customeremail}', '${session.amount/100}', '${session.receipt_url}', '${session.payment_method_details.card.brand}', '${last4}')`);
     } else if (session.payment_method_details.type === "card" && session.payment_method_details.card.wallet !== null) {
@@ -183,13 +173,10 @@ switch (event.type) {
     const prefix = 'GBDEL';
     const randomChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let trackingNumber = prefix;
-    // Generate 11 random characters
     for (let i = 0; i < 11; i++) {
       trackingNumber += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
     }
-    //check if the tracking number already exists in the database
     const checkTrackingNumber = await client.query(`SELECT * FROM shippingaddress WHERE tracking_number = '${trackingNumber}'`);
-    //if the tracking number already exists, generate a new one
     if (checkTrackingNumber.rows.length > 0) {
       trackingNumber = prefix;
       for (let i = 0; i < 11; i++) {
@@ -197,13 +184,9 @@ switch (event.type) {
       }
     }
     let deldate;
-    
-    // Insert moment + 5 days into the database
-    const deliveryDate = moment().add(121, 'hours').format('YYYY-MM-DD HH:mm:ss');
-    //check the time of the delivery date
+      const deliveryDate = moment().add(121, 'hours').format('YYYY-MM-DD HH:mm:ss');
     const deliveryTime = moment().add(121, 'hours').format('HH:mm:ss');
     console.log(deliveryTime);
-    // check if deliveryTime is after 6PM
     
     const deliveryMoment = moment(deliveryTime, 'HH:mm:ss');
     const sixPM = moment().set('hour', 18).set('minute', 0).set('second', 0);
@@ -221,11 +204,7 @@ switch (event.type) {
     const deliveryDate = moment().add(121, 'hours').format('YYYY-MM-DD HH:mm:ss');
     deldate = deliveryDate;
     }
-    
-    // if the delivery time is after 6PM, subtract hour difference from 6PM
-    // extract the date of the delivery date variable deldate in format DD-MM-YYYY
     const deliveryDateDiffformt = moment(deldate).format('DD-MM-YYYY');
-
     client.query(`insert into shippingaddress(orderid, firstline, secondline, city, postcode, tracking_number, planned_delivery_time, status) VALUES ('${session.payment_intent}', '${parseAddress.firstline}', '${parseAddress.secondline}', '${parseAddress.city}', '${parseAddress.postcode}', '${trackingNumber}', '${deldate}', 'Pending')`);
     sendEmail(session.metadata.customeremail, session.metadata.fullname, session.amount/100, products, trackingNumber, deliveryDateDiffformt);
     break;

@@ -8,7 +8,6 @@ const bodyParser = require('body-parser');
 router.post('/create-payment-intent', bodyParser.json(), async (req, res) => {
   const { amount, email, fullname, phone, addtometadata, usid, address, discountAmount } = req.body;
   const roundedAmount = Math.round(amount * 100);
-
   const customercreated = await stripe.customers.create({
     email: email,
     name: fullname,
@@ -21,8 +20,6 @@ router.post('/create-payment-intent', bodyParser.json(), async (req, res) => {
       country: address.country
     },
   });
-
-  // const cartString = JSON.stringify(cart);
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: roundedAmount,

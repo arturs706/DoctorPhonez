@@ -7,7 +7,7 @@ const session = require('express-session');
 const passport = require('passport');
 const sessionSecret = process.env.SESSION_SECRET_KEY;
 const userRouter = require('./routers/userrouter');
-const paymentRouter = require('./routers/stripecheckout');
+// const paymentRouter = require('./routers/stripecheckout');
 const paymentIntent = require('./routers/paymentintent');
 const authRouter = require('./routers/auth');
 const orderRouter = require('./routers/orders');
@@ -20,7 +20,7 @@ const ratings = require('./routers/ratings');
 const discountCodes = require('./routers/discountcodes');
 
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://doctorphonez.co.uk'],
+  origin: ['http://localhost:3000', 'https://dphonez.artdevdln.co.uk'],
   credentials: true,
   optionSuccessStatus: 200
 };
@@ -30,7 +30,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24, // 1 day in milliseconds
+    maxAge: 1000 * 60 * 60 * 24,
   }
 }));
 
@@ -39,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors(corsOptions));
 app.use('/api/v1/', userRouter);
-app.use('/api/v1/', paymentRouter)
+// app.use('/api/v1/', paymentRouter)
 app.use('/api/v1/', paymentIntent);
 app.use('/api/v1', authRouter);
 app.use('/api/v1', orderRouter);

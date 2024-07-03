@@ -3,32 +3,71 @@
 import { useEffect, useState } from 'react';
 import styles from './success.module.css';
 import { useSearchParams } from 'next/navigation';
-import { useDispatch } from 'react-redux';
 import { clearCart } from '../../../redux/reducers/cartSlice';
-import refreshToken from '../../../checkCr';
 import Image from 'next/image';
 import Link from 'next/link';
 import { clearDiscountSlice } from '../../../redux/reducers/discountSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import jwt_decode from 'jwt-decode';
 
 
 export default function Page() {
   const searchParams = useSearchParams();
   const dispatch = useDispatch()
   const search = searchParams.get('payment_intent');
-
+  const cart = useSelector(state => state.counter);
 
 
   useEffect(() => {
-      async function checkRefreshToken() {
-        await refreshToken(dispatch);
+  
+    fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/refresh_token', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
       }
-      checkRefreshToken();
-      dispatch(clearDiscountSlice());
-      dispatch(clearCart());
-      
-      localStorage.removeItem('shippingDetails')
-    }, [dispatch]);
-
+    })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data.accessToken);
+      const { email } = jwt_decode(data.accessToken);
+      console.log(email);
+      console.log(cart);
+      return fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${data.accessToken}`
+        },
+        body: JSON.stringify({
+          cart: cart,
+          email: email,
+          payment_intent: search
+        })
+      });
+    })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Checkout API call failed');
+      }
+      return res.json();
+    })
+    .then(() => {
+      localStorage.removeItem('shippingDetails');
+      localStorage.removeItem('discount');
+    })
+    .catch((error) => {
+      console.error('Error during API call:', error);
+    });
+    dispatch(clearDiscountSlice());
+    dispatch(clearCart());
+  }, []);
+  
     
   return (
     <div className={styles.successmain}>
@@ -89,3 +128,47 @@ export default function Page() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+// import { setProfile, setEmailAdd, setUserRole, setTokenExp } from './redux/reducers/profileSlice'
+
+// const refreshToken = async (dispatch) => {
+//     await (await fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/login/success', {
+//     // const result = await (await fetch("https://pm.doctorphonez.co.uk/api/v1/login/success", {
+//     method: 'GET',
+//     credentials: 'include',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     }
+//   })).json();
+//   await fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/refresh_token', {
+//     // await fetch("https://pm.doctorphonez.co.uk/api/v1/refresh_token", {
+//     method: 'POST',
+//     credentials: 'include',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     }
+//   })
+//   .then((res) => res.json())
+//   .then((data) => {
+//       if (data.err !== "jwt must be provided") {
+//         const { email, exp, role } = jwt_decode(data.accessToken)
+//         dispatch(setProfile(data.accessToken))
+//         dispatch(setEmailAdd(email))
+//         dispatch(setUserRole(role))
+//         const isExpired = (exp * 1000) < new Date().getTime()
+//         dispatch(setTokenExp(isExpired))
+//       }
+//   })
+// }
+          
+  
+
+
+// export default refreshToken;

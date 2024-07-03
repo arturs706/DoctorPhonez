@@ -26,8 +26,6 @@ export default function Home() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const dispatch = useDispatch()
 
-
-    //if user is logged in, redirect to home page
     useEffect(() => {
       setIsLoading(true)
       fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/refresh_token', {

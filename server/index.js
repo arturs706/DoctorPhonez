@@ -7,7 +7,9 @@ const session = require('express-session');
 const passport = require('passport');
 const sessionSecret = process.env.SESSION_SECRET_KEY;
 const userRouter = require('./routers/userrouter');
-// const paymentRouter = require('./routers/stripecheckout');
+// const kafkaConsumer = require('./kafka/kafkaConsumer');
+// const kafkaProducer = require('./kafka/kafkaProducer');
+const paymentRouter = require('./routers/stripecheckout');
 const paymentIntent = require('./routers/paymentintent');
 const authRouter = require('./routers/auth');
 const orderRouter = require('./routers/orders');
@@ -38,8 +40,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors(corsOptions));
+// app.use(kafkaConsumer);
+// app.use(kafkaProducer);
 app.use('/api/v1/', userRouter);
-// app.use('/api/v1/', paymentRouter)
+app.use('/api/v1/', paymentRouter)
 app.use('/api/v1/', paymentIntent);
 app.use('/api/v1', authRouter);
 app.use('/api/v1', orderRouter);

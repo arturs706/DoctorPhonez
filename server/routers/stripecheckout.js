@@ -2,21 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
-const Stripe = require('stripe');
 const client = require('../db/conn');
 var moment = require('moment'); 
+const bodyParser = require('body-parser');
 
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2022-11-15',
-});
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-
-
-
-let data;
-let eventType;
 
 const orderConfirmationTemplate = (customer_name, total, items, trackingnumber, deliveryDateDiffformt) => `
 <html>
@@ -102,116 +92,13 @@ const sendEmail = async (customerEmail, customerName, total, items, trackingnumb
 }
   
 
-router.post('/send-email', async (req, res) => {
-    try {
-await sendEmail();
-res.status(200).json({ message: 'Email sent successfully' });
-} catch (error) {
-console.error(error);
-res.status(500).json({ error: 'Failed to send email' });
-}
-});
 
-router.post("/webhooks", express.raw({ type: "application/json" }), async(request, response) => {
-const sig = request.headers["stripe-signature"];
-let event;
-try {
-  event = stripe.webhooks.constructEvent(request.body, sig, webhookSecret);
-} catch (err) {
-  response.status(400).send(`Webhook Error: ${err.message}`);
-  return;
-}
-// Handle the event
-switch (event.type) {
-  case "charge.succeeded":
-  const session = event.data.object;
-  console.log(session);
-  const parseAddress = JSON.parse(session.metadata.address);
-  const discount = JSON.parse(session.metadata.discountAmount);
-    const parseJSON = JSON.parse(session.metadata.orderdet)
-    const products = [];
-    for (let i = 0; i < parseJSON.length; i++) {
-      const item = parseJSON[i];
-      const product = await client.query(`SELECT 
-      products.prodname, 
-      products.price, 
-      productimages.imageone,
-      productspecs.color,
-      productspecs.memory
-  FROM 
-      products 
-      INNER JOIN productimages ON products.modelnr = productimages.productmodel 
-      INNER JOIN productspecs ON products.modelnr = productspecs.productmodel
-  WHERE 
-      products.modelnr = '${item.modelnr}'`);
-      products.push({
-        image_url: product.rows[0].imageone,
-        product_name: product.rows[0].prodname,
-        quantity: item.quantity,
-        price: (product.rows[0].price * (1 - discount)).toFixed(2),
-        color: product.rows[0].color,
-        memory: product.rows[0].memory
-      });
-    }
-    
-    if (session.payment_method_details.type === "card" && session.payment_method_details.card.wallet === null){
-    const last4 = session.payment_method_details.card.last4.toString();
-    client.query(`insert into userorders VALUES ('${session.payment_intent}', '${session.metadata.userid}', '${session.metadata.customeremail}', '${session.amount/100}', '${session.receipt_url}', '${session.payment_method_details.card.brand}', '${last4}')`);
-    } else if (session.payment_method_details.type === "card" && session.payment_method_details.card.wallet !== null) {
-      const last4 = session.payment_method_details.card.last4.toString();
-      client.query(`insert into userorders VALUES ('${session.payment_intent}', '${session.metadata.userid}', '${session.metadata.customeremail}', '${session.amount/100}', '${session.receipt_url}', '${session.payment_method_details.card.wallet.type}', '${last4}')`);
-    }
-    else if (session.payment_method_details.type === "klarna") {
-      client.query(`insert into userorders VALUES ('${session.payment_intent}', '${session.metadata.userid}', '${session.metadata.customeremail}', '${session.amount/100}', '${session.receipt_url}', '${session.payment_method_details.type}', '${session.payment_method_details.klarna.payment_method_category}')`);}
-      for (let i = 0; i < products.length; i++) {
-        const item = products[i];
-        const itemPriceString = item.price.toString();
-        const itemMemory = item.memory.toString();
-        client.query(`INSERT INTO orderitems (orderid, productname, quantity, price, color, memory, imageurl) 
-                      VALUES('${session.payment_intent}', '${item.product_name}', '${item.quantity}', '${itemPriceString}', '${item.color}', '${itemMemory}', '${item.image_url}')`);
-      }
-    const prefix = 'GBDEL';
-    const randomChars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let trackingNumber = prefix;
-    for (let i = 0; i < 11; i++) {
-      trackingNumber += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-    }
-    const checkTrackingNumber = await client.query(`SELECT * FROM shippingaddress WHERE tracking_number = '${trackingNumber}'`);
-    if (checkTrackingNumber.rows.length > 0) {
-      trackingNumber = prefix;
-      for (let i = 0; i < 11; i++) {
-        trackingNumber += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-      }
-    }
-    let deldate;
-      const deliveryDate = moment().add(121, 'hours').format('YYYY-MM-DD HH:mm:ss');
-    const deliveryTime = moment().add(121, 'hours').format('HH:mm:ss');
-    console.log(deliveryTime);
-    
-    const deliveryMoment = moment(deliveryTime, 'HH:mm:ss');
-    const sixPM = moment().set('hour', 18).set('minute', 0).set('second', 0);
-    if (deliveryMoment.isAfter(sixPM)) {
-    console.log(deliveryMoment);
-    console.log(sixPM);
-    const diffinSeconds = deliveryMoment.diff(sixPM, 'seconds');
-    console.log(diffinSeconds);
+router.post("/checkout", bodyParser.json(), async(request, response) => {
+  const body = request.body;
+  const headers = request.headers;
+  console.log(headers);
 
-    const nextDate = deliveryMoment.startOf('day').add(1, 'day').set('hour', 9).set('minute', 0).set('second', 0);
-    const deliveryDate = nextDate.add(5, 'days');
-    deldate = deliveryDate.add(diffinSeconds, 'seconds');
 
-    } else {
-    const deliveryDate = moment().add(121, 'hours').format('YYYY-MM-DD HH:mm:ss');
-    deldate = deliveryDate;
-    }
-    const deliveryDateDiffformt = moment(deldate).format('DD-MM-YYYY');
-    client.query(`insert into shippingaddress(orderid, firstline, secondline, city, postcode, tracking_number, planned_delivery_time, status) VALUES ('${session.payment_intent}', '${parseAddress.firstline}', '${parseAddress.secondline}', '${parseAddress.city}', '${parseAddress.postcode}', '${trackingNumber}', '${deldate}', 'Pending')`);
-    sendEmail(session.metadata.customeremail, session.metadata.fullname, session.amount/100, products, trackingNumber, deliveryDateDiffformt);
-    break;
-  default:
-    console.log(`Unhandled event type ${event.type}`);
-}
-// Return a 200 response to acknowledge receipt of the event
 response.send();
 });
 

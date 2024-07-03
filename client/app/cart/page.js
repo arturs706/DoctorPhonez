@@ -134,9 +134,10 @@ export default function Page() {
             }
         })
     }, [dispatch, router]);
-        const handleBack = () => {
-            router.back();
-        }
+    
+    const handleBack = () => {
+        router.back();
+    }
     //create a function that returns no items in the cart when the cart is empty
         useEffect(() => {
             if (cart.length === 0) {

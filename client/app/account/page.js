@@ -2,13 +2,13 @@
 
 import styles from './page.module.css';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 import { setProfile, setEmailAdd, setUserRole, setTokenExp } from '../../redux/reducers/profileSlice'
 import Link from 'next/link';
 import Loader from '@/app/Loader';
+import { useRouter } from 'next/navigation';
 
 
 export default function Page() {
@@ -36,6 +36,7 @@ export default function Page() {
             router.push('/account/login')
         } else {
             const { email, exp, role } = jwt_decode(data.accessToken)
+            console.log(data.accessToken)
             dispatch(setProfile(data.accessToken))
             dispatch(setEmailAdd(email))
             dispatch(setUserRole(role))

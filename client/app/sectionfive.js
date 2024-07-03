@@ -49,8 +49,8 @@ export default function Sectionfive() {
                 <Image
                     src={item.imageone}
                     alt = {item.prodname}
-                    width={205}
-                    height={280}
+                    width={140}
+                    height={220}
                     quality={100}
                 />
                 </Link>

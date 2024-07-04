@@ -105,14 +105,6 @@ router.post('/checkout', bodyParser.json(), authenticateToken, async (req, res) 
   const paymentMeth = 'card'; 
   const cardEndNr = '1234'; 
   const plannedDeliveryTime = moment().add(5, 'days').toDate();
-  // for (const item of body.cart) {
-  //   console.log(item.prodname);
-  //   console.log(item.quantity);
-  //   console.log(item.price);
-  //   console.log(item.color);
-  // }
-  // res.status(200).json({ message: 'Order placed successfully', trackingNumber });
-  
 
   try {
     await client.query('BEGIN');
@@ -146,6 +138,7 @@ router.post('/checkout', bodyParser.json(), authenticateToken, async (req, res) 
     );
 
     await client.query('COMMIT');
+    sendEmail(userEmail, `${firstName} ${lastName}`, totalCost, body.cart, trackingNumber, plannedDeliveryTime.format('DD/MM/YYYY'));
 
     res.status(200).json({ message: 'Order placed successfully', trackingNumber });
   } catch (error) {

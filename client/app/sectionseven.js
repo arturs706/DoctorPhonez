@@ -54,8 +54,8 @@ export default function Sectionseven() {
                 <Image
                     src = {item.imageone}
                     alt = {item.prodname}
-                    width={230}
-                    height={300}
+                    width={120}
+                    height={200}
                     quality={100}
                 />
                 </Link>

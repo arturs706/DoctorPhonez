@@ -12,6 +12,8 @@ FROM userorders
 INNER JOIN shippingaddress 
 ON userorders.orderid  = shippingaddress.orderid WHERE userorders.userid  = $1;`
 
+// SELECT productname, quantity, price, color, memory, imageurl FROM orderitems WHERE orderid = 'f4b3b9b1-5b6d-4b6d-8b9d-2b0d3d9b4b8d';
+// ;
 const RETRIEVE_ORDER_ITEMS = `SELECT productname, quantity, price, color, memory, imageurl FROM orderitems WHERE orderid = $1;`
 
 router.get('/orders',bodyParser.json(), authenticateToken, async (req, res) => {

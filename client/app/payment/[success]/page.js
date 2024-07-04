@@ -34,10 +34,7 @@ export default function Page() {
       return res.json();
     })
     .then((data) => {
-      console.log(data.accessToken);
       const { email } = jwt_decode(data.accessToken);
-      console.log(email);
-      console.log(cart);
       return fetch(process.env.NEXT_PUBLIC_API_URL + 'api/v1/checkout', {
         method: 'POST',
         headers: {
@@ -47,7 +44,8 @@ export default function Page() {
         body: JSON.stringify({
           cart: cart,
           email: email,
-          payment_intent: search
+          payment_intent: search,
+          shipping_address: JSON.parse(localStorage.getItem('shippingDetails')),
         })
       });
     })

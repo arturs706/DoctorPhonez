@@ -5,7 +5,8 @@ const nodemailer = require('nodemailer');
 const client = require('../db/conn');
 var moment = require('moment'); 
 const bodyParser = require('body-parser');
-
+const authenticateToken = require('../middleware/authz');
+const { v4: uuidv4 } = require('uuid'); 
 
 
 const orderConfirmationTemplate = (customer_name, total, items, trackingnumber, deliveryDateDiffformt) => `
@@ -92,19 +93,66 @@ const sendEmail = async (customerEmail, customerName, total, items, trackingnumb
 }
   
 
+router.post('/checkout', bodyParser.json(), authenticateToken, async (req, res) => {
+  const body = req.body;
+  const userEmail = req.user.email;
+  const user = await client.query('SELECT * FROM users WHERE email = $1', [userEmail]);
+  const userId = user.rows[0].usid;
+  const orderId = uuidv4();
+  const deliveryId = uuidv4();
+  const trackingNumber = `TRK-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+  const totalCost = body.cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0).toFixed(2);
+  const paymentMeth = 'card'; 
+  const cardEndNr = '1234'; 
+  const plannedDeliveryTime = moment().add(5, 'days').toDate();
+  // for (const item of body.cart) {
+  //   console.log(item.prodname);
+  //   console.log(item.quantity);
+  //   console.log(item.price);
+  //   console.log(item.color);
+  // }
+  // res.status(200).json({ message: 'Order placed successfully', trackingNumber });
+  
 
-router.post("/checkout", bodyParser.json(), async(request, response) => {
-  const body = request.body;
-  const headers = request.headers;
-  console.log(headers);
+  try {
+    await client.query('BEGIN');
 
+    await client.query(
+      'INSERT INTO userorders (orderid, userid, useremail, totalcost, receiptlink, paymentmeth, cardendnr) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      [orderId, userId, userEmail, totalCost, body.payment_intent, paymentMeth, cardEndNr]
+    );
 
-response.send();
+    for (const item of body.cart) {
+      await client.query(
+        'INSERT INTO orderitems (orderid, productname, quantity, price, color, memory, imageurl) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+        [orderId, item.prodname, item.quantity, item.price, item.color, item.memory, item.imageone]
+      );
+    }
+
+    const { firstName, lastName, firstLine, secondLine, town, postcode } = body.shipping_address;
+    await client.query(
+      'INSERT INTO shippingaddress (orderid, firstline, secondline, city, postcode, tracking_number, postage_time, planned_delivery_time, last_update, status) VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7, NOW(), $8)',
+      [orderId, firstLine, secondLine, town, postcode, trackingNumber, plannedDeliveryTime, 'Order placed']
+    );
+
+    await client.query(
+      'INSERT INTO delivery (id, tracking_number, postcode, address) VALUES ($1, $2, $3, $4)',
+      [deliveryId, trackingNumber, postcode, `${firstLine}, ${secondLine}, ${town}`]
+    );
+
+    await client.query(
+      'INSERT INTO delivery_tracking (id, delivery_id, status, status_time) VALUES ($1, $2, $3, NOW())',
+      [uuidv4(), deliveryId, 'Order placed']
+    );
+
+    await client.query('COMMIT');
+
+    res.status(200).json({ message: 'Order placed successfully', trackingNumber });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('Error processing order:', error);
+    res.status(500).json({ message: 'Error processing order' });
+  }
 });
 
 module.exports = router;
-
-
-
-
-

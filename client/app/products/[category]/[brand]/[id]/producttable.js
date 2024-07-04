@@ -87,8 +87,8 @@ export default function Home({ products }) {
           <Image 
             src={dataretrvieved.product.imageone}
             alt="Main image"
-            width={354}
-            height={438}
+            width={224}
+            height={338}
             priority={true}
           />
             <h3>£{dataretrvieved.product.price}</h3>
@@ -99,20 +99,20 @@ export default function Home({ products }) {
           <Image 
             src={dataretrvieved.product.imagetwo}
             alt="Main image"
-            width={354/5}
+            width={354/3}
             height={438/4.1}
           />
           <Image 
             src={dataretrvieved.product.imagethree}
             alt="Main image"
-            width={354/4}
+            width={354/5}
             height={438/4}
           />
                   <Image 
             src={dataretrvieved.product.imagefour}
             alt="Main image"
-            width={354/4}
-            height={438/4}
+            width={354/2}
+            height={400/4}
           />
           </div>
           <h3 className={styles.smallscprice}>£{dataretrvieved.product.price}</h3>

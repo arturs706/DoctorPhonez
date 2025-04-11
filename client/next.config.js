@@ -1,12 +1,14 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   experimental: {
-    urlImports: ['https://unpkg.com', 'https://cdn.skypack.dev', 'https://cdnjs.cloudflare.com', 'https://res.cloudinary.com', 'https://cdn.jsdelivr.net'],
-    appDir: true
+    optimizePackageImports: ['react-icons', '@fortawesome/react-fontawesome'],
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   output: 'standalone',
   images: {
     formats: ['image/avif', 'image/webp'],
     domains: ['files.stripe.com', 'res.cloudinary.com', 'mdbcdn.b-cdn.net']
   },
 };
+
+module.exports = nextConfig;

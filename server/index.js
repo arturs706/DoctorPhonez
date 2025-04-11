@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 const PORT = process.env.PORT || 10000;
 const app = express();
@@ -20,6 +21,9 @@ const delivery = require('./routers/delivery');
 const emailRes = require('./routers/emailsub');
 const ratings = require('./routers/ratings');
 const discountCodes = require('./routers/discountcodes');
+
+// Serve static files from the 'public' directory
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 const corsOptions = {
   origin: ['http://localhost:3000', 'https://dphonez.artdevdln.co.uk'],

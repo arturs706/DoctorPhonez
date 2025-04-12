@@ -32,6 +32,8 @@
     font-size: 0.8rem;
     padding-left: 2.8rem;
     margin-top: 1rem;
+    position: relative;
+    z-index: 7; /* Add z-index to make links clickable */
 }
 
 .linetwo h3 {
@@ -40,6 +42,8 @@
     padding: 0.5rem;
     border-radius: 0.6rem;
     cursor: pointer;
+    position: relative;
+    z-index: 7; /* Ensure links are clickable */
 }
 .linetwo a:active {
     transform: scale(0.95);
@@ -82,6 +86,8 @@
     font-size: 0.8rem;
     padding-right: 3.1rem;
     margin-top: 3rem;
+    position: relative;
+    z-index: 7; /* Increase z-index to be higher than nav's z-index of 6 */
 }
 
 .logo {
@@ -100,6 +106,13 @@
 .img {
     margin: 0 0.4rem;
     cursor: pointer;
+    position: relative;
+    z-index: 7; /* Ensure icons are clickable */
+}
+
+.cartstatus {
+    position: relative;
+    z-index: 7; /* Ensure cart icon and count are clickable */
 }
 
 @media screen and (max-width: 1024) {

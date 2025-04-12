@@ -7,7 +7,7 @@ const nextConfig = {
   output: 'standalone',
   images: {
     formats: ['image/avif', 'image/webp'],
-    domains: ['files.stripe.com', 'res.cloudinary.com', 'mdbcdn.b-cdn.net']
+    domains: ['files.stripe.com', 'res.cloudinary.com', 'mdbcdn.b-cdn.net', 'localhost']
   },
 };
 

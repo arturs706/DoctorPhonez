@@ -1,4 +1,4 @@
-"use client"; // This is a client-side file 
+
 
 import useEmblaCarousel from 'embla-carousel-react'
 import { useEffect, useState, useCallback} from "react";
@@ -101,36 +101,34 @@ export default function Sectionone(props) {
   const swiperData = [
     { 
       id: 1,
-      imgSrc: "https://res.cloudinary.com/dyvgcv5se/image/upload/v1677172489/uwl/Phonez/Untitled-1.png",
-      imgAlt: "Picture of the author",
+      imgSrc: process.env.NEXT_PUBLIC_API_URL + "static/main/main_1.png",
+      imgAlt: "Samsung S25 Ultra",
       width: setImageWidth,
       height: setImageHeight,
       quality: 100,
       priority: true,
-      description: "Experience Unmatched Innovation with the New Samsung S23 Ultra: The Ultimate Device for Power Users!"
+      description: "Samsung Galaxy S25 Ultra: Unleash the Power of Titanium Black Galaxy AI and Sleek Design"
     },
     {
       id: 2,
-      imgSrc: "https://res.cloudinary.com/dttaprmbu/image/upload/v1677956802/Untitled_ske8sa.png",
-      imgAlt: "Picture of the author",
+      imgSrc: process.env.NEXT_PUBLIC_API_URL + "static/main/main_2.png",
+      imgAlt: "Samsung S25 Ultra",
       width: setImageWidth,
       height: setImageHeight,
       quality: 100,
       priority: true,
-      description: "Samsung S23: Redefining Smartphone Technology with Impressive Features and Sleek Design"
+      description: "Titanium SilverBlue Galaxy AI Samsung S25 Ultra: Discover the Future of Technology"
     },
     {
       id: 3,
-      imgSrc: "https://res.cloudinary.com/dttaprmbu/image/upload/v1678028837/SamsungS23Plus_xxdeeo.png",
-      imgAlt: "Picture of the author",
+      imgSrc: process.env.NEXT_PUBLIC_API_URL + "static/main/main_3.png",
+      imgAlt: "Samsung S25 Ultra",
       width: setImageWidth,
       height: setImageHeight,
       quality: 100,
       priority: true,
-      description: "Samsung S23+: Elevating the Smartphone Experience with Advanced Features and Stylish Design"
+      description: "Titanium Grey Galaxy AI Samsung S25 Ultra: Unleash the Power of the Latest Technology"
     },
-    
-  
   ];
 
   if (domLoaded === false) return <div><Loader/></div>;
@@ -144,14 +142,27 @@ export default function Sectionone(props) {
           <div className={styles.divone}>
             <div className={styles.maindivh1}>
               <h3>Unbox the Future with the new</h3>
-              <h1>Samsung S23 Series</h1>
+              <h1>Samsung S25 AI Series</h1>
 
 
             </div>
             <div className={styles.maindivh1024}>
                 <h1>Samsung</h1>
                 <span>Unbox the Future with the New</span>
-                <h1>S23 Series</h1>
+                <div className={styles.divspan}>
+                  <div className={styles.inlineContainer}>
+                  <h1 style={{ marginRight: '10px' }}>S25</h1>
+                    <Image 
+                      src="/ai.png"
+                      alt="AI icon"
+                      width={2383/20}
+                      height={2617/20}
+                      className={`${styles.rotateonhover} ${styles.aiIcon}`}
+                      onClick={handleClick}
+                    />
+                    <h1 style={{ marginLeft: '-35px' }}>AI Series</h1>
+                  </div>
+                </div>
             </div>
           </div>
           <div className={styles.ovalblur}></div>

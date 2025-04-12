@@ -536,6 +536,7 @@
       width: 100%;
       background-color: #000235;
       color: white;
+      
     }
     
     .sectionone{
@@ -546,5 +547,48 @@
       height: 200vh;
       width: 100%;
       overflow: hidden;
+    }
+  }
+
+  .inlineContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .inlineContainer h1 {
+    margin: 0;
+    display: inline;
+    font-size: 3.7rem; /* Reduced from default h1 size */
+    white-space: nowrap;
+  }
+
+  .inlineContainer img {
+    display: inline;
+    vertical-align: middle;
+    width: auto;
+    height: 3.5rem; /* Match height to text for better alignment */
+  }
+
+  /* Add responsive adjustments */
+  @media screen and (max-width: 1200px) {
+    .inlineContainer h1 {
+      font-size: 3rem;
+    }
+    
+    .inlineContainer img {
+      height: 3rem;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .inlineContainer h1 {
+      font-size: 2.5rem;
+    }
+    
+    .inlineContainer img {
+      height: 2.5rem;
     }
   }
